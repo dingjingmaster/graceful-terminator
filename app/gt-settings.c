@@ -15,7 +15,7 @@ struct _GtSettings
 {
     GObject parent_instance;
 
-    KgxTheme theme;
+    GtTheme theme;
     double scale;
     int64_t scrollback_lines;
 

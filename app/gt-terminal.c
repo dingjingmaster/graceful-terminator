@@ -93,8 +93,8 @@ static void gt_terminal_dispose(GObject *object)
 
 static void update_terminal_colours(GtTerminal *self)
 {
-    KgxTheme current_theme;
-    KgxTheme resolved_theme;
+    GtTheme current_theme;
+    GtTheme resolved_theme;
     GdkRGBA fg;
     GdkRGBA bg;
 
@@ -594,7 +594,7 @@ static void location_changed(GtTerminal *self)
 
 static void dark_changed(GtTerminal *self)
 {
-    KgxTheme theme;
+    GtTheme theme;
 
     g_object_get (self->settings, "theme", &theme, NULL);
 

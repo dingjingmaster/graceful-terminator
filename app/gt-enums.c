@@ -20,7 +20,7 @@ GType gt_close_dialog_context_get_type (void)
         { 0, NULL, NULL }
     };
     if (g_once_init_enter (&gtype_id)) {
-        GType new_type = g_enum_register_static (g_intern_static_string ("KgxCloseDialogContext"), values);
+        GType new_type = g_enum_register_static (g_intern_static_string ("GtCloseDialogContext"), values);
         g_once_init_leave (&gtype_id, new_type);
     }
     return (GType) gtype_id;
@@ -38,7 +38,7 @@ GType gt_theme_get_type (void)
         { 0, NULL, NULL }
     };
     if (g_once_init_enter (&gtype_id)) {
-        GType new_type = g_enum_register_static (g_intern_static_string ("KgxTheme"), values);
+        GType new_type = g_enum_register_static (g_intern_static_string ("GtTheme"), values);
         g_once_init_leave (&gtype_id, new_type);
     }
     return (GType) gtype_id;
@@ -55,7 +55,7 @@ GType gt_status_get_type (void)
         { 0, NULL, NULL }
     };
     if (g_once_init_enter (&gtype_id)) {
-        GType new_type = g_flags_register_static (g_intern_static_string ("KgxStatus"), values);
+        GType new_type = g_flags_register_static (g_intern_static_string ("GtStatus"), values);
         g_once_init_leave (&gtype_id, new_type);
     }
     return (GType) gtype_id;
@@ -70,7 +70,7 @@ GType gt_zoom_get_type (void)
         { 0, NULL, NULL }
     };
     if (g_once_init_enter (&gtype_id)) {
-        GType new_type = g_enum_register_static (g_intern_static_string ("KgxZoom"), values);
+        GType new_type = g_enum_register_static (g_intern_static_string ("GtZoom"), values);
         g_once_init_leave (&gtype_id, new_type);
     }
     return (GType) gtype_id;

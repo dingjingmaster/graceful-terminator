@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="KgxThemeSwitcher" parent="GtkWidget">
+  <template class="GtThemeSwitcher" parent="GtkWidget">
     <child>
       <object class="GtkBox" id="box">
         <property name="orientation">horizontal</property>
@@ -9,7 +9,7 @@
         <property name="spacing">18</property>
         <child>
           <object class="GtkOverlay">
-            <property name="visible" bind-source="KgxThemeSwitcher" bind-property="show-system" bind-flags="sync-create"/>
+            <property name="visible" bind-source="GtThemeSwitcher" bind-property="show-system" bind-flags="sync-create"/>
             <property name="halign">center</property>
             <child>
               <object class="GtkCheckButton" id="system_selector">

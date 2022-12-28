@@ -8,7 +8,7 @@ struct _GtThemeSwitcher
 {
     GtkWidget parent_instance;
 
-    KgxTheme theme;
+    GtTheme theme;
 
     GtkWidget *box;
     GtkWidget *system_selector;
@@ -30,7 +30,7 @@ static GParamSpec *pspecs[LAST_PROP] = {NULL,};
 
 static void theme_check_active_changed(GtThemeSwitcher *self) 
 {
-    KgxTheme theme;
+    GtTheme theme;
 
     if (gtk_check_button_get_active (GTK_CHECK_BUTTON (self->system_selector))) {
         theme = GT_THEME_AUTO;
@@ -49,7 +49,7 @@ static void theme_check_active_changed(GtThemeSwitcher *self)
 }
 
 
-static void set_theme(GtThemeSwitcher *self, KgxTheme theme) 
+static void set_theme(GtThemeSwitcher *self, GtTheme theme)
 {
     if (self->theme == theme)
         return;

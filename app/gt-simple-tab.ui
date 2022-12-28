@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="KgxSimpleTab" parent="KgxTab">
+  <template class="GtSimpleTab" parent="GtTab">
     <property name="terminal">terminal</property>
     <child type="content">
       <object class="GtkScrolledWindow">
@@ -13,11 +13,11 @@
           <class name="terminal"/>
         </style>
         <property name="child">
-          <object class="KgxTerminal" id="terminal">
+          <object class="GtTerminal" id="terminal">
             <property name="vexpand">True</property>
             <property name="allow-hyperlink">True</property>
             <binding name="settings">
-              <lookup name="settings">KgxSimpleTab</lookup>
+              <lookup name="settings">GtSimpleTab</lookup>
             </binding>
             <signal name="notify::path" handler="path_changed" swapped="no"/>
           </object>

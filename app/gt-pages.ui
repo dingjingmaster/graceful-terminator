@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="KgxPages" parent="AdwBin">
+  <template class="GtPages" parent="AdwBin">
     <binding name="active-page">
       <lookup name="child">
         <lookup name="selected-page">view</lookup>
@@ -9,17 +9,17 @@
     </binding>
     <binding name="title">
       <lookup name="tab-title">
-        <lookup name="active-page">KgxPages</lookup>
+        <lookup name="active-page">GtPages</lookup>
       </lookup>
     </binding>
     <binding name="path">
       <lookup name="tab-path">
-        <lookup name="active-page">KgxPages</lookup>
+        <lookup name="active-page">GtPages</lookup>
       </lookup>
     </binding>
     <binding name="status">
       <lookup name="tab-status">
-        <lookup name="active-page">KgxPages</lookup>
+        <lookup name="active-page">GtPages</lookup>
       </lookup>
     </binding>
     <property name="child">
@@ -73,10 +73,10 @@
     <property name="name">status-regular-symbolic</property>
   </object>
   <object class="GSignalGroup" id="active_page_signals">
-    <property name="target-type">KgxTab</property>
-    <property name="target" bind-source="KgxPages" bind-property="active-page" bind-flags="sync-create"/>
+    <property name="target-type">GtTab</property>
+    <property name="target" bind-source="GtPages" bind-property="active-page" bind-flags="sync-create"/>
   </object>
   <object class="GBindingGroup" id="active_page_binds">
-    <property name="source" bind-source="KgxPages" bind-property="active-page" bind-flags="sync-create"/>
+    <property name="source" bind-source="GtPages" bind-property="active-page" bind-flags="sync-create"/>
   </object>
 </interface>

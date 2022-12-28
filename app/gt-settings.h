@@ -18,7 +18,7 @@ typedef enum
     GT_THEME_NIGHT = 1,  /*< nick=night >*/
     GT_THEME_DAY = 2,    /*< nick=day >*/
     GT_THEME_HACKER = 3, /*< nick=hacker >*/
-} KgxTheme;
+} GtTheme;
 
 #define GT_FONT_SCALE_MIN 0.5
 #define GT_FONT_SCALE_MAX 4.0

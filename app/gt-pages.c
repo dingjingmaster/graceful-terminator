@@ -223,7 +223,7 @@ static void died (GtTab* page, GtkMessageType type, const char* message, gboolea
 }
 
 
-static void zoom (GtTab* tab, KgxZoom dir, GtPages* self)
+static void zoom (GtTab* tab, GtZoom dir, GtPages* self)
 {
     g_signal_emit (self, signals[ZOOM], 0, dir);
 }
@@ -362,7 +362,7 @@ static void gt_pages_class_init (GtPagesClass *klass)
     pspecs[PROP_TAB_COUNT] = g_param_spec_uint ("tab-count", "Page Count", "Number of pages", 0, G_MAXUINT32, 0, G_PARAM_READABLE);
     pspecs[PROP_TITLE] = g_param_spec_string ("title", "Title", "The title of the active page", NULL, G_PARAM_READWRITE);
     pspecs[PROP_PATH] = g_param_spec_object ("path", "Path", "The path of the active page", G_TYPE_FILE, G_PARAM_READWRITE);
-    pspecs[PROP_ACTIVE_PAGE] = g_param_spec_object ("active-page", NULL, NULL, KGX_TYPE_TAB, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+    pspecs[PROP_ACTIVE_PAGE] = g_param_spec_object ("active-page", NULL, NULL, GT_TYPE_TAB, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
     pspecs[PROP_IS_ACTIVE] = g_param_spec_boolean ("is-active", "Is Active", "Is active pages", FALSE, G_PARAM_READWRITE);
     pspecs[PROP_STATUS] = g_param_spec_flags ("status", "Status", "Active page status", GT_TYPE_STATUS, GT_NONE, G_PARAM_READWRITE);
     pspecs[PROP_SEARCH_MODE_ENABLED] = g_param_spec_boolean ("search-mode-enabled", "Search mode enabled", "Whether the search mode is enabled for active page", FALSE, G_PARAM_READWRITE);

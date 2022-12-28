@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="KgxTab" parent="GtkBox">
+  <template class="GtTab" parent="GtkBox">
     <property name="orientation">vertical</property>
     <style>
       <class name="tab"/>
     </style>
     <child>
       <object class="GtkSearchBar" id="search_bar">
-        <property name="search-mode-enabled" bind-source="KgxTab" bind-property="search-mode-enabled" bind-flags="sync-create|bidirectional"/>
+        <property name="search-mode-enabled" bind-source="GtTab" bind-property="search-mode-enabled" bind-flags="sync-create|bidirectional"/>
         <signal name="notify::search-mode-enabled" handler="search_enabled" swapped="no"/>
         <child>
           <object class="AdwClamp">
@@ -95,10 +95,10 @@
     </child>
   </template>
   <object class="GSignalGroup" id="terminal_signals">
-    <property name="target-type">KgxTerminal</property>
-    <property name="target" bind-source="KgxTab" bind-property="terminal" bind-flags="sync-create"/>
+    <property name="target-type">GtTerminal</property>
+    <property name="target" bind-source="GtTab" bind-property="terminal" bind-flags="sync-create"/>
   </object>
   <object class="GBindingGroup" id="terminal_binds">
-    <property name="source" bind-source="KgxTab" bind-property="terminal" bind-flags="sync-create"/>
+    <property name="source" bind-source="GtTab" bind-property="terminal" bind-flags="sync-create"/>
   </object>
 </interface>

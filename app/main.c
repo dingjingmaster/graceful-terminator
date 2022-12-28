@@ -12,14 +12,14 @@ int main(int argc, char *argv[])
 
     g_log_set_writer_func (log_handler, NULL, NULL);
 
-    //bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-    //bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-    //textdomain (GETTEXT_PACKAGE);
+    bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+    bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+    textdomain (GETTEXT_PACKAGE);
 
     INFO(PACKAGE_NAME " is starting...");
 
     g_set_application_name (GT_DISPLAY_NAME);
-    //gtk_window_set_default_icon_name (GT_APPLICATION_ID);
+    gtk_window_set_default_icon_name (GT_APPLICATION_ID);
 
     app = g_object_new (GT_TYPE_APPLICATION,
                         "application_id", GT_APPLICATION_ID,

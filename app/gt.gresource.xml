@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/graceful/Terminator/">
+    <file compressed="true">gt-window.ui</file>
+    <file compressed="true">gt-close-dialog.ui</file>
+    <file compressed="true">gt-pages.ui</file>
+    <file compressed="true">gt-tab.ui</file>
+    <file compressed="true">gt-tab-button.ui</file>
+    <file compressed="true">gt-tab-switcher.ui</file>
+    <file compressed="true">gt-tab-switcher-row.ui</file>
+    <file compressed="true">gt-theme-switcher.ui</file>
+    <file compressed="true">gt-simple-tab.ui</file>
+    <file compressed="true">style.css</file>
+    <file compressed="true">style-dark.css</file>
+    <file compressed="true">logo.txt</file>
+    <file preprocess="xml-stripblanks">icons/scalable/status/status-privileged-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/status/status-regular-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/status/status-remote-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/status/tab-counter-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/status/tab-overflow-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/status/tab-switcher-collapse-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/status/theme-check-symbolic.svg</file>
+  </gresource>
+  <gresource prefix="/org/graceful/Terminator/gtk">
+    <file compressed="true">menus.ui</file>
+    <file>help-overlay.ui</file>
+  </gresource>
+</gresources>

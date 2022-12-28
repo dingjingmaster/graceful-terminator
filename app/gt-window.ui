@@ -29,10 +29,10 @@
       </item>
     </section>
   </menu>
-  <template class="KgxWindow" parent="AdwApplicationWindow">
+  <template class="GtWindow" parent="AdwApplicationWindow">
     <signal name="notify::is-active" handler="active_changed" swapped="no"/>
     <property name="content">
-      <object class="KgxTabSwitcher" id="tab_switcher">
+      <object class="GtTabSwitcher" id="tab_switcher">
         <signal name="new-tab" handler="new_tab_cb" swapped="no"/>
         <property name="child">
           <object class="GtkBox">
@@ -63,7 +63,7 @@
                       <object class="GtkPopoverMenu">
                         <property name="menu-model">primary_menu</property>
                         <child type="theme-switcher">
-                          <object class="KgxThemeSwitcher" id="theme_switcher"/>
+                          <object class="GtThemeSwitcher" id="theme_switcher"/>
                         </child>
                         <child type="zoom-controls">
                           <object class="GtkBox">
@@ -118,7 +118,7 @@
                   </object>
                 </child>
                 <child type="end">
-                  <object class="KgxTabButton" id="tab_button">
+                  <object class="GtTabButton" id="tab_button">
                     <property name="visible" bind-source="tab_switcher" bind-property="narrow" bind-flags="sync-create"/>
                     <property name="action-name">win.tab-switcher</property>
                   </object>
@@ -146,8 +146,8 @@
               </object>
             </child>
             <child>
-              <object class="KgxPages" id="pages">
-                <property name="is-active" bind-source="KgxWindow" bind-property="is-active" bind-flags="sync-create" />
+              <object class="GtPages" id="pages">
+                <property name="is-active" bind-source="GtWindow" bind-property="is-active" bind-flags="sync-create" />
                 <signal name="zoom" handler="zoom" swapped="no"/>
                 <signal name="create-tearoff-host" handler="create_tearoff_host" swapped="no"/>
                 <signal name="notify::status" handler="status_changed" swapped="yes" />
@@ -182,6 +182,6 @@
     </style>
   </template>
   <object class="GBindingGroup" id="settings_binds">
-    <property name="source" bind-source="KgxWindow" bind-property="settings" bind-flags="sync-create"/>
+    <property name="source" bind-source="GtWindow" bind-property="settings" bind-flags="sync-create"/>
   </object>
 </interface>

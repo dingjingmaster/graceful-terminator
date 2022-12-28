@@ -115,7 +115,7 @@ static void active_changed(GObject *object, GParamSpec *pspec, gpointer data)
 }
 
 
-static void zoom(GtPages *pages, KgxZoom dir, GtWindow *self)
+static void zoom(GtPages *pages, GtZoom dir, GtWindow *self)
 {
     GAction *action = NULL;
     GtkApplication *app = gtk_window_get_application (GTK_WINDOW (self));

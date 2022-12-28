@@ -8,7 +8,7 @@
 #include "gt-simple-tab.h"
 
 
-G_DEFINE_TYPE (GtSimpleTab, gt_simple_tab, KGX_TYPE_TAB)
+G_DEFINE_TYPE (GtSimpleTab, gt_simple_tab, GT_TYPE_TAB)
 
 enum
 {
@@ -279,7 +279,7 @@ static void gt_simple_tab_class_init(GtSimpleTabClass *klass)
 
     g_object_class_install_properties (object_class, LAST_PROP, pspecs);
 
-    gtk_widget_class_set_template_from_resource (widget_class, GT_APPLICATION_PATH "kgx-simple-tab.ui");
+    gtk_widget_class_set_template_from_resource (widget_class, GT_APPLICATION_PATH "gt-simple-tab.ui");
 
     gtk_widget_class_bind_template_child (widget_class, GtSimpleTab, terminal);
 

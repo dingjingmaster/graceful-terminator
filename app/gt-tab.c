@@ -454,7 +454,7 @@ static void gt_tab_class_init(GtTabClass *klass)
                                   G_STRUCT_OFFSET (GtTabClass, died), NULL, NULL, gt_marshals_VOID__ENUM_STRING_BOOLEAN,
                                   G_TYPE_NONE, 3, GTK_TYPE_MESSAGE_TYPE, G_TYPE_STRING, G_TYPE_BOOLEAN);
 
-    gtk_widget_class_set_template_from_resource (widget_class, GT_APPLICATION_PATH "kgx-tab.ui");
+    gtk_widget_class_set_template_from_resource (widget_class, GT_APPLICATION_PATH "gt-tab.ui");
 
     gtk_widget_class_bind_template_child_private (widget_class, GtTab, stack);
     gtk_widget_class_bind_template_child_private (widget_class, GtTab, spinner_revealer);
@@ -685,14 +685,6 @@ inline static GtStatus pop_type(GHashTable *table, GPid pid, GtkStyleContext *co
     }
 }
 
-
-/**
- * gt_tab_pop_child:
- * @self: the #GtTab
- * @process: the #KgxProcess of the child process
- *
- * Remove a child added with gt_tab_push_child()
- */
 void gt_tab_pop_child(GtTab *self, GtProcess *process)
 {
     GtkStyleContext *context;

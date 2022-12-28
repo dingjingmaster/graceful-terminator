@@ -64,13 +64,11 @@ static void gt_application_startup (GApplication *app)
     const char *const zoomOutAccel[] =      {"<primary>minus",     NULL};
     const char *const zoomNormalAccel[] =   {"<primary>0",         NULL};
 
-    DEBUG("")
     g_resources_register (gt_get_resource ());
 
     g_type_ensure (GT_TYPE_TERMINAL);
     g_type_ensure (GT_TYPE_PAGES);
 
-    DEBUG("")
     G_APPLICATION_CLASS (gt_application_parent_class)->startup (app);
 
     gtk_application_set_accels_for_action (GTK_APPLICATION (app), "win.new-window", newWindowAccel);

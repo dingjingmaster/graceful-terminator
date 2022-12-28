@@ -24,14 +24,14 @@ typedef enum
 {
     GT_ZOOM_IN = 0,  /*< nick=in >*/
     GT_ZOOM_OUT = 1, /*< nick=out >*/
-} KgxZoom;
+} GtZoom;
 
 
 #ifndef __GTK_DOC_IGNORE__
 typedef struct _GtPages GtPages;
 #endif
 
-#define KGX_TYPE_TAB gt_tab_get_type ()
+#define GT_TYPE_TAB gt_tab_get_type ()
 
 G_DECLARE_DERIVABLE_TYPE (GtTab, gt_tab, GT, TAB, GtkBox)
 

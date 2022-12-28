@@ -81,6 +81,11 @@ FILE(GLOB GT_SRC
         menus.ui
         )
 
+execute_process(
+        COMMAND glib-compile-resources --generate-header ${CMAKE_SOURCE_DIR}/app/gt.gresource.xml --target=${CMAKE_SOURCE_DIR}/app/gt-resources.h
+        COMMAND glib-compile-resources --generate-source ${CMAKE_SOURCE_DIR}/app/gt.gresource.xml --target=${CMAKE_SOURCE_DIR}/app/gt-resources.c
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/app/)
+
 add_executable(graceful-terminator ${CMAKE_SOURCE_DIR}/app/main.c ${GT_SRC})
 target_link_libraries(graceful-terminator
         ${VTE_LIBRARIES}
