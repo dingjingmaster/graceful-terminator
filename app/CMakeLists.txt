@@ -83,8 +83,10 @@ FILE(GLOB GT_SRC
 execute_process(
         COMMAND glib-compile-resources --generate-header ${CMAKE_SOURCE_DIR}/app/gt.gresource.xml --target=${CMAKE_SOURCE_DIR}/app/gt-resources.h
         COMMAND glib-compile-resources --generate-source ${CMAKE_SOURCE_DIR}/app/gt.gresource.xml --target=${CMAKE_SOURCE_DIR}/app/gt-resources.c
-        COMMAND glib-genmarshal --prefix gt_marshals --internal --header ${CMAKE_SOURCE_DIR}/app/gt-marshals.list --output ${CMAKE_SOURCE_DIR}/app/gt-marshals.h
-        COMMAND glib-genmarshal --prefix gt_marshals --internal --include-header gt-marshals.h --body ${CMAKE_SOURCE_DIR}/app/gt-marshals.list --output ${CMAKE_SOURCE_DIR}/app/gt-marshals.c
+        COMMAND glib-genmarshal --quiet --prefix gt_marshals --internal --header ${CMAKE_SOURCE_DIR}/app/gt-marshals.list --output ${CMAKE_SOURCE_DIR}/app/gt-marshals.h
+        COMMAND glib-genmarshal --quiet --prefix gt_marshals --internal --include-header gt-marshals.h --body ${CMAKE_SOURCE_DIR}/app/gt-marshals.list --output ${CMAKE_SOURCE_DIR}/app/gt-marshals.c
+        COMMAND gdbus-codegen --c-generate-autocleanup all --interface-prefix org.freedesktop. --c-namespace Xdg --header --output ${CMAKE_SOURCE_DIR}/app/xdg-fm1.h ${CMAKE_SOURCE_DIR}/app/data/org.freedesktop.FileManager1.xml
+        COMMAND gdbus-codegen --c-generate-autocleanup all --interface-prefix org.freedesktop. --c-namespace Xdg --body --output ${CMAKE_SOURCE_DIR}/app/xdg-fm1.c ${CMAKE_SOURCE_DIR}/app/data/org.freedesktop.FileManager1.xml
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/app/)
 
 add_executable(graceful-terminator ${CMAKE_SOURCE_DIR}/app/main.c ${GT_SRC})
@@ -100,5 +102,6 @@ target_link_libraries(graceful-terminator
         ${GIO_UNIX_LIBRARIES} -lm)
 
 target_link_directories(graceful-terminator PRIVATE ${GLIB_INCLUDE_DIRS} ${VTE_INCLUDE_DIRS})
+install(TARGETS graceful-terminator DESTINATION /usr/bin/)
 
 include(${CMAKE_SOURCE_DIR}/app/data/data.cmake)
