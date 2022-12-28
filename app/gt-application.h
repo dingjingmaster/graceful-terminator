@@ -23,14 +23,14 @@ struct _GtApplication
 
     /*< public >*/
     GTree*                      pages;
-    GtSettings*                settings;
+    GtSettings*                 settings;
 };
 G_DECLARE_FINAL_TYPE (GtApplication, gt_application, GT, APPLICATION, AdwApplication)
 
 
-void gt_application_add_page     (GtApplication* self, GtTab* page);
-GtTab* gt_application_lookup_page  (GtApplication* self, guint id);
-GtTab* gt_application_add_terminal (GtApplication* self, GtWindow* existingWindow, guint32 timestamp,
+void    gt_application_add_page     (GtApplication* self, GtTab* page);
+GtTab*  gt_application_lookup_page  (GtApplication* self, guint id);
+GtTab*  gt_application_add_terminal (GtApplication* self, GtWindow* existingWindow, guint32 timestamp,
                                      GFile* workingDirectory, GStrv command, const char* title);
 
 G_END_DECLS

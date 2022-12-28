@@ -12,24 +12,28 @@ int main(int argc, char *argv[])
 
     g_log_set_writer_func (log_handler, NULL, NULL);
 
-    bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-    bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-    textdomain (GETTEXT_PACKAGE);
+    //bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+    //bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+    //textdomain (GETTEXT_PACKAGE);
 
-    DEBUG(PACKAGE_NAME " is starting...");
-    DEBUG("%d-%s", 0, "ss");
-    INFO(PACKAGE_NAME " KKK is starting...");
-    WARNING(PACKAGE_NAME " is starting...");
-//    ERROR(PACKAGE_NAME " is starting...");
+    INFO(PACKAGE_NAME " is starting...");
 
     g_set_application_name (GT_DISPLAY_NAME);
-    gtk_window_set_default_icon_name (GT_APPLICATION_ID);
+    //gtk_window_set_default_icon_name (GT_APPLICATION_ID);
 
-    app = g_object_new (GT_TYPE_APPLICATION, "application_id", GT_APPLICATION_ID, "flags",
-                        G_APPLICATION_HANDLES_COMMAND_LINE | G_APPLICATION_HANDLES_OPEN |
-                        G_APPLICATION_CAN_OVERRIDE_APP_ID, "register-session", TRUE, NULL);
+    app = g_object_new (GT_TYPE_APPLICATION,
+                        "application_id", GT_APPLICATION_ID,
+                        "flags", G_APPLICATION_HANDLES_COMMAND_LINE
+                                | G_APPLICATION_HANDLES_OPEN
+                                | G_APPLICATION_CAN_OVERRIDE_APP_ID,
+                        "register-session", TRUE,
+                        NULL);
 
-    return g_application_run (G_APPLICATION (app), argc, argv);
+    int ret = g_application_run (G_APPLICATION (app), argc, argv);
+
+    INFO(PACKAGE_NAME " is exited with %d!", ret);
+
+    return ret;
 }
 
 static GLogWriterOutput log_handler (GLogLevelFlags level, const GLogField* fields, gsize nFields, gpointer udata)
@@ -42,7 +46,6 @@ static GLogWriterOutput log_handler (GLogLevelFlags level, const GLogField* fiel
     const char* func = NULL;
     const char* domain = NULL;
     const char* loc = NULL;
-
 
     switch (level) {
         case G_LOG_LEVEL_DEBUG: {
@@ -93,6 +96,9 @@ static GLogWriterOutput log_handler (GLogLevelFlags level, const GLogField* fiel
         }
 #endif
     }
+
+    write (2, PACKAGE_NAME, strlen (PACKAGE_NAME));
+    write (2, " ", 1);
 
     if (domain) {
         write (2, domain, strlen (domain));

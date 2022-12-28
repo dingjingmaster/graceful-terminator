@@ -94,3 +94,5 @@ target_link_libraries(graceful-terminator
         ${GIO_UNIX_LIBRARIES} -lm)
 
 target_link_directories(graceful-terminator PRIVATE ${GLIB_INCLUDE_DIRS} ${VTE_INCLUDE_DIRS})
+
+include(${CMAKE_SOURCE_DIR}/app/data/data.cmake)
