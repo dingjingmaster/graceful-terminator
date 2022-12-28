@@ -98,7 +98,6 @@ static void gt_application_open (GApplication* app, GFile** files, int nFiles, c
 
 static int gt_application_local_command_line (GApplication* app, char*** arguments, int* exitStatus)
 {
-    DEBUG("")
     for (size_t i = 0; NULL != (*arguments)[i]; ++i) {
         if (i == 0) {
             continue;
@@ -120,7 +119,6 @@ static int gt_application_local_command_line (GApplication* app, char*** argumen
 
 static int gt_application_command_line (GApplication* app, GApplicationCommandLine *cli)
 {
-    DEBUG("")
     GtApplication *self = GT_APPLICATION (app);
     guint32 timestamp = GDK_CURRENT_TIME;
     GVariantDict *options = NULL;
@@ -239,7 +237,6 @@ static void print_logo (short width)
 
 static int gt_application_handle_local_options (GApplication *app, GVariantDict *options)
 {
-    DEBUG("")
     gboolean version = FALSE;
     gboolean about = FALSE;
     g_autoptr(GDate) date = g_date_new();
@@ -289,12 +286,10 @@ static int gt_application_handle_local_options (GApplication *app, GVariantDict 
 
 static void gt_application_class_init (GtApplicationClass *klass)
 {
-    DEBUG("");
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
     GApplicationClass *app_class = G_APPLICATION_CLASS (klass);
 
     object_class->finalize = gt_application_finalize;
-
     app_class->activate = gt_application_activate;
     app_class->startup = gt_application_startup;
     app_class->open = gt_application_open;
@@ -380,7 +375,6 @@ static void zoom_normal_activated (GSimpleAction* action, GVariant* parameter, g
 
 static void zoom_in_activated (GSimpleAction* action, GVariant* parameter, gpointer data)
 {
-    DEBUG("")
     GtApplication *self = GT_APPLICATION (data);
 
     gt_settings_increase_scale (self->settings);
@@ -420,7 +414,6 @@ static gboolean theme_to_colour_scheme (GBinding* binding, const GValue* fromVal
 
 static gboolean scale_to_can_reset (GBinding* binding, const GValue* fromValue, GValue* toValue, gpointer udata)
 {
-    DEBUG("")
     double scale = g_value_get_double (fromValue);
 
     g_value_set_boolean (toValue, fabs (scale - GT_FONT_SCALE_DEFAULT) > 0.05);
@@ -430,7 +423,6 @@ static gboolean scale_to_can_reset (GBinding* binding, const GValue* fromValue, 
 
 static void gt_application_init (GtApplication *self)
 {
-    DEBUG("");
     g_autoptr (GPropertyAction) themeAction = NULL;
     AdwStyleManager *styleManager = adw_style_manager_get_default ();
     GAction *action;
@@ -468,7 +460,6 @@ static void page_died (gpointer data, GObject *deadObject)
 
 void gt_application_add_page (GtApplication* self, GtTab* page)
 {
-    DEBUG("")
     g_return_if_fail (GT_IS_APPLICATION (self));
     g_return_if_fail (GT_IS_TAB (page));
 
@@ -490,7 +481,6 @@ GtTab* gt_application_lookup_page (GtApplication* self, guint id)
 
 static void started (GObject* src, GAsyncResult* res, gpointer app)
 {
-    DEBUG("")
     g_autoptr (GError) error = NULL;
     GtTab *page = GT_TAB (src);
 
@@ -505,7 +495,6 @@ static void started (GObject* src, GAsyncResult* res, gpointer app)
 
 GtTab* gt_application_add_terminal (GtApplication* self, GtWindow* existingWindow, guint32 timestamp, GFile* workingDirectory, GStrv argv, const char* title)
 {
-    DEBUG("")
     g_autofree char *directory = NULL;
     g_auto (GStrv) shell = NULL;
     GtkWindow *window;

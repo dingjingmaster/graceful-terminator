@@ -1,0 +1,43 @@
+[Desktop Entry]
+Name=Console
+Name[zh_CN]=终端
+Name[zh_TW]=终端
+Exec=graceful-terminator
+
+Icon=org.graceful.Terminator
+
+Keywords[en_GB]=command;prompt;cmd;commandline;run;shell;terminal;graceful;kings cross;
+Keywords[zh_CN]=command;prompt;cmd;commandline;run;shell;terminal;graceful;kings cross;命令;提示符;命令行;运行;终端;
+Keywords[zh_TW]=command;prompt;cmd;commandline;run;shell;terminal;graceful;kings cross;console;終端機;主控台;主控臺;命令;命令列;命令提示字元;執行;
+Keywords=command;prompt;cmd;commandline;run;shell;terminal;graceful;kings cross;
+
+Terminal=false
+
+Type=Application
+
+Categories=System;TerminalEmulator;X-UBUNTU-Utilities;X-GRACEFUL-Utilities;X-GNOME-Utilities;GTK;GNOME;
+
+StartupNotify=true
+
+DBusActivatable=true
+
+X-GNOME-UsesNotifications=true
+
+Actions=new-window;new-tab;
+
+X-Purism-FormFactor=Workstation;Mobile;
+
+[Desktop Action new-window]
+Exec=graceful-terminator
+Name=New Window
+Name[zh_CN]=新建窗口
+Name[zh_TW]=新視窗
+
+Icon=window-new
+
+[Desktop Action new-tab]
+Exec=graceful-terminator --tab
+Name=New Tab
+Name[zh_CN]=新建标签页
+Name[zh_TW]=新分頁
+Icon=tab-new

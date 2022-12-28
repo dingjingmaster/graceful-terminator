@@ -33,9 +33,9 @@
 #define USERPASS USERCHARS_CLASS "+(?:" PASSCHARS_CLASS "+)?"
 #define URLPATH "(?:(/" PATHCHARS_CLASS "+(?:[(]" PATHCHARS_CLASS "*[)])*" PATHCHARS_CLASS "*)*" PATHTERM_CLASS ")?"
 
-#define KGX_TERMINAL_N_LINK_REGEX 5
+#define GT_TERMINAL_N_LINK_REGEX 5
 
-static const char *links[KGX_TERMINAL_N_LINK_REGEX] = {SCHEME "//(?:" USERPASS "\\@)?" HOST PORT URLPATH,
+static const char *links[GT_TERMINAL_N_LINK_REGEX] = {SCHEME "//(?:" USERPASS "\\@)?" HOST PORT URLPATH,
                                                        "(?:www|ftp)" HOSTCHARS_CLASS "*\\." HOST PORT URLPATH,
                                                        "(?:callto:|h323:|sip:)" USERCHARS_CLASS "[" USERCHARS ".]*(?:" PORT "/[a-z0-9]+)?\\@" HOST,
                                                        "(?:mailto:)?" USERCHARS_CLASS "[" USERCHARS ".]*\\@" HOSTCHARS_CLASS "+\\." HOST,
@@ -54,7 +54,7 @@ struct _GtTerminal
 
     /* Hyperlinks */
     char *current_url;
-    int match_id[KGX_TERMINAL_N_LINK_REGEX];
+    int match_id[GT_TERMINAL_N_LINK_REGEX];
 
     gboolean popup_is_touch;
 };
@@ -78,7 +78,7 @@ static guint signals[N_SIGNALS];
 
 static void gt_terminal_dispose(GObject *object)
 {
-    GtTerminal *self = KGX_TERMINAL (object);
+    GtTerminal *self = GT_TERMINAL (object);
 
     g_clear_pointer (&self->current_url, g_free);
     g_clear_pointer (&self->popup_menu, gtk_widget_unparent);
@@ -158,7 +158,7 @@ static void update_terminal_colours(GtTerminal *self)
 
 static void gt_terminal_set_property(GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
-    GtTerminal *self = KGX_TERMINAL (object);
+    GtTerminal *self = GT_TERMINAL (object);
 
     switch (property_id) {
         case PROP_SETTINGS:
@@ -173,7 +173,7 @@ static void gt_terminal_set_property(GObject *object, guint property_id, const G
 
 
 static void gt_terminal_get_property(GObject *object, guint property_id, GValue *value, GParamSpec *pspec) {
-    GtTerminal *self = KGX_TERMINAL (object);
+    GtTerminal *self = GT_TERMINAL (object);
     const char *uri;
     g_autoptr (GFile) path = NULL;
 
@@ -211,7 +211,7 @@ static gboolean have_url_under_pointer(GtTerminal *self, double x, double y)
     } else {
         match = vte_terminal_check_match_at (VTE_TERMINAL (self), x, y, &match_id);
 
-        for (int i = 0; i < KGX_TERMINAL_N_LINK_REGEX; i++) {
+        for (int i = 0; i < GT_TERMINAL_N_LINK_REGEX; i++) {
             if (self->match_id[i] == match_id) {
                 self->current_url = g_steal_pointer (&match);
                 break;
@@ -242,7 +242,8 @@ static void update_menu_position(GtTerminal *self)
 }
 
 
-static void context_menu(GtTerminal *self, double x, double y, gboolean touch) {
+static void context_menu(GtTerminal *self, double x, double y, gboolean touch)
+{
     GtkApplication *app;
     gboolean value;
 
@@ -314,9 +315,7 @@ static void got_text(GdkClipboard *cb, GAsyncResult *result, GtTerminal *self)
     g_autofree char *text = NULL;
     g_autoptr (GError) error = NULL;
 
-    /* Get the resulting text of the read operation */
     text = gdk_clipboard_read_text_finish (cb, result, &error);
-
     if (error) {
         g_critical ("Couldn't paste text: %s\n", error->message);
         return;
@@ -391,11 +390,9 @@ static void got_proxy(GObject *source, GAsyncResult *res, gpointer data)
     }
 
     if (show->show_folders) {
-        xdg_file_manager1_call_show_folders (fm, (const char *const *) uris, "", NULL, complete_call,
-                                             g_steal_pointer (&show));
+        xdg_file_manager1_call_show_folders (fm, (const char *const *) uris, "", NULL, complete_call, g_steal_pointer (&show));
     } else {
-        xdg_file_manager1_call_show_items (fm, (const char *const *) uris, "", NULL, complete_call,
-                                           g_steal_pointer (&show));
+        xdg_file_manager1_call_show_items (fm, (const char *const *) uris, "", NULL, complete_call, g_steal_pointer (&show));
     }
 }
 
@@ -431,11 +428,12 @@ static void gt_terminal_size_allocate(GtkWidget *widget, int width, int height, 
 {
     int rows;
     int cols;
-    GtTerminal *self = KGX_TERMINAL (widget);
+    GtTerminal *self = GT_TERMINAL (widget);
     VteTerminal *term = VTE_TERMINAL (self);
 
-    if (self->popup_menu)
+    if (self->popup_menu) {
         gtk_popover_present (GTK_POPOVER (self->popup_menu));
+    }
 
     GTK_WIDGET_CLASS (gt_terminal_parent_class)->size_allocate (widget, width, height, baseline);
 
@@ -448,7 +446,7 @@ static void gt_terminal_size_allocate(GtkWidget *widget, int width, int height, 
 
 static void gt_terminal_direction_changed(GtkWidget *widget, GtkTextDirection previous_direction)
 {
-    GtTerminal *self = KGX_TERMINAL (widget);
+    GtTerminal *self = GT_TERMINAL (widget);
 
     GTK_WIDGET_CLASS (gt_terminal_parent_class)->direction_changed (widget, previous_direction);
 
@@ -468,15 +466,8 @@ static void gt_terminal_class_init(GtTerminalClass *klass)
     widget_class->size_allocate = gt_terminal_size_allocate;
     widget_class->direction_changed = gt_terminal_direction_changed;
 
-    pspecs[PROP_SETTINGS] = g_param_spec_object ("settings", NULL, NULL, GT_TYPE_SETTINGS,
-                                                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
+    pspecs[PROP_SETTINGS] = g_param_spec_object ("settings", NULL, NULL, GT_TYPE_SETTINGS, G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
 
-    /**
-     * GtTerminal:path:
-     *
-     *
-     * Stability: Private
-     */
     pspecs[PROP_PATH] = g_param_spec_object ("path", "Path", "Current path", G_TYPE_FILE, G_PARAM_READABLE);
 
     g_object_class_install_properties (object_class, LAST_PROP, pspecs);
@@ -484,18 +475,13 @@ static void gt_terminal_class_init(GtTerminalClass *klass)
     signals[SIZE_CHANGED] = g_signal_new ("size-changed", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST, 0, NULL, NULL,
                                           gt_marshals_VOID__UINT_UINT, G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
 
-    gtk_widget_class_install_action (widget_class, "menu.popup", NULL,
-                                     (GtkWidgetActionActivateFunc) menu_popup_activated);
-    gtk_widget_class_install_action (widget_class, "term.open-link", NULL,
-                                     (GtkWidgetActionActivateFunc) open_link_activated);
-    gtk_widget_class_install_action (widget_class, "term.copy-link", NULL,
-                                     (GtkWidgetActionActivateFunc) copy_link_activated);
+    gtk_widget_class_install_action (widget_class, "menu.popup", NULL, (GtkWidgetActionActivateFunc) menu_popup_activated);
+    gtk_widget_class_install_action (widget_class, "term.open-link", NULL, (GtkWidgetActionActivateFunc) open_link_activated);
+    gtk_widget_class_install_action (widget_class, "term.copy-link", NULL, (GtkWidgetActionActivateFunc) copy_link_activated);
     gtk_widget_class_install_action (widget_class, "term.copy", NULL, (GtkWidgetActionActivateFunc) copy_activated);
     gtk_widget_class_install_action (widget_class, "term.paste", NULL, (GtkWidgetActionActivateFunc) paste_activated);
-    gtk_widget_class_install_action (widget_class, "term.select-all", NULL,
-                                     (GtkWidgetActionActivateFunc) select_all_activated);
-    gtk_widget_class_install_action (widget_class, "term.show-in-files", NULL,
-                                     (GtkWidgetActionActivateFunc) show_in_files_activated);
+    gtk_widget_class_install_action (widget_class, "term.select-all", NULL, (GtkWidgetActionActivateFunc) select_all_activated);
+    gtk_widget_class_install_action (widget_class, "term.show-in-files", NULL, (GtkWidgetActionActivateFunc) show_in_files_activated);
 
     gtk_widget_class_add_binding_action (widget_class, GDK_KEY_F10, GDK_SHIFT_MASK, "menu.popup", NULL);
     gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Menu, 0, "menu.popup", NULL);
@@ -574,8 +560,7 @@ static void long_pressed(GtkGestureLongPress *gesture, double x, double y, GtTer
 
 static void selection_changed(GtTerminal *self)
 {
-    gtk_widget_action_set_enabled (GTK_WIDGET (self), "term.copy",
-                                   vte_terminal_get_has_selection (VTE_TERMINAL (self)));
+    gtk_widget_action_set_enabled (GTK_WIDGET (self), "term.copy", vte_terminal_get_has_selection (VTE_TERMINAL (self)));
 }
 
 
@@ -583,8 +568,8 @@ static void location_changed(GtTerminal *self)
 {
     gboolean value;
 
-    value = vte_terminal_get_current_file_uri (VTE_TERMINAL (self)) ||
-            vte_terminal_get_current_directory_uri (VTE_TERMINAL (self));
+    value = vte_terminal_get_current_file_uri (VTE_TERMINAL (self))
+            || vte_terminal_get_current_directory_uri (VTE_TERMINAL (self));
 
     gtk_widget_action_set_enabled (GTK_WIDGET (self), "term.show-in-files", value);
 
@@ -624,12 +609,10 @@ static void gt_terminal_init(GtTerminal *self)
     gtk_event_controller_set_propagation_phase (controller, GTK_PHASE_CAPTURE);
     gtk_widget_add_controller (GTK_WIDGET (self), controller);
 
-    shortcut = gtk_shortcut_new (gtk_keyval_trigger_new (GDK_KEY_C, GDK_CONTROL_MASK | GDK_SHIFT_MASK),
-                                 gtk_named_action_new ("term.copy"));
+    shortcut = gtk_shortcut_new (gtk_keyval_trigger_new (GDK_KEY_C, GDK_CONTROL_MASK | GDK_SHIFT_MASK), gtk_named_action_new ("term.copy"));
     gtk_shortcut_controller_add_shortcut (GTK_SHORTCUT_CONTROLLER (controller), shortcut);
 
-    shortcut = gtk_shortcut_new (gtk_keyval_trigger_new (GDK_KEY_V, GDK_CONTROL_MASK | GDK_SHIFT_MASK),
-                                 gtk_named_action_new ("term.paste"));
+    shortcut = gtk_shortcut_new (gtk_keyval_trigger_new (GDK_KEY_V, GDK_CONTROL_MASK | GDK_SHIFT_MASK), gtk_named_action_new ("term.paste"));
     gtk_shortcut_controller_add_shortcut (GTK_SHORTCUT_CONTROLLER (controller), shortcut);
 
     gtk_widget_action_set_enabled (GTK_WIDGET (self), "term.open-link", FALSE);
@@ -647,7 +630,7 @@ static void gt_terminal_init(GtTerminal *self)
     g_signal_connect (self, "current-directory-uri-changed", G_CALLBACK (location_changed), NULL);
     g_signal_connect (self, "current-file-uri-changed", G_CALLBACK (location_changed), NULL);
 
-    for (int i = 0; i < KGX_TERMINAL_N_LINK_REGEX; i++) {
+    for (int i = 0; i < GT_TERMINAL_N_LINK_REGEX; i++) {
         g_autoptr (VteRegex) regex = NULL;
         g_autoptr (GError) error = NULL;
 
@@ -663,13 +646,11 @@ static void gt_terminal_init(GtTerminal *self)
         vte_terminal_match_set_cursor_name (VTE_TERMINAL (self), self->match_id[i], "pointer");
     }
 
-    g_signal_connect_object (adw_style_manager_get_default (), "notify::dark", G_CALLBACK (dark_changed), self,
-                             G_CONNECT_SWAPPED);
+    g_signal_connect_object (adw_style_manager_get_default (), "notify::dark", G_CALLBACK (dark_changed), self, G_CONNECT_SWAPPED);
 
     self->settings_signals = g_signal_group_new (GT_TYPE_SETTINGS);
     g_object_bind_property (self, "settings", self->settings_signals, "target", G_BINDING_DEFAULT);
-    g_signal_group_connect_swapped (self->settings_signals, "notify::theme", G_CALLBACK (update_terminal_colours),
-                                    self);
+    g_signal_group_connect_swapped (self->settings_signals, "notify::theme", G_CALLBACK (update_terminal_colours), self);
 
     self->settings_binds = g_binding_group_new ();
     g_object_bind_property (self, "settings", self->settings_binds, "source", G_BINDING_DEFAULT);
@@ -698,7 +679,6 @@ void gt_terminal_accept_paste(GtTerminal *self, const char *text)
         GtkWidget *dlg = adw_message_dialog_new (GTK_WINDOW (gtk_widget_get_root (GTK_WIDGET (self))),
                                                  _("You are pasting a command that runs as an administrator"), NULL);
         adw_message_dialog_format_body (ADW_MESSAGE_DIALOG (dlg),
-            // TRANSLATORS: %s is the command being pasted
                                         _("Make sure you know what the command does:\n%s"), text);
         adw_message_dialog_add_responses (ADW_MESSAGE_DIALOG (dlg), "cancel", _("_Cancel"), "paste", _("_Paste"), NULL);
         adw_message_dialog_set_response_appearance (ADW_MESSAGE_DIALOG (dlg), "paste", ADW_RESPONSE_DESTRUCTIVE);

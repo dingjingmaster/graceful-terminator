@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.graceful.Terminator
+Exec=/usr/bin/graceful-terminator --gapplication-service

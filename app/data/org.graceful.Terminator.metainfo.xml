@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.graceful.Terminator</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <project_group>Graceful</project_group>
+  <name>Graceful Terminator</name>
+  <name xml:lang="zh_TW">主控臺</name>
+  <name xml:lang="zh_CN">控制台</name>
+  <summary>Terminal Emulator</summary>
+  <summary xml:lang="zh_TW">終端機模擬器</summary>
+  <summary xml:lang="zh_CN">终端模拟器</summary>
+  <description>
+    <p> terminal </p>
+    <p xml:lang="zh_TW">终端</p>
+    <p xml:lang="zh_CN">终端</p>
+  </description>
+  <kudos>
+    <kudo>HiDpiIcon</kudo>
+    <kudo>ModernToolkit</kudo>
+  </kudos>
+  <recommends>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>touch</control>
+  </recommends>
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
+  <screenshots>
+    <screenshot type="default">
+      <image height="561" width="732">https://gitlab.gnome.org/GNOME/console/raw/gnome-43/data/screenshots/01-Terminal.png</image>
+      <caption>Terminal window</caption>
+      <caption xml:lang="zh_TW">終端機視窗</caption>
+      <caption xml:lang="zh_CN">终端窗口</caption>
+  </screenshots>
+  <releases>
+    <release version="0.0.0" date="2022-12-28" type="stable">
+      <description>
+        <p>Updated Translations:</p>
+        <ul>
+          <li>Chinese (Taiwan)</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+  <launchable type="desktop-id">org.graceful.Terminator.desktop</launchable>
+  <url type="homepage">https://github.com/dingjingmaster/graceful-terminator/</url>
+  <url type="bugtracker">https://github.com/dingjingmaster/graceful-terminator/issues</url>
+  <update_contact>dingjing@live.cn</update_contact>
+  <translation type="gettext">graceful-terminator</translation>
+  <developer_name>graceful</developer_name>
+  <custom>
+    <value key="Purism::form_factor">workstation</value>
+    <value key="Purism::form_factor">mobile</value>
+  </custom>
+</component>

@@ -12,7 +12,7 @@ G_BEGIN_DECLS
 
 #define GT_TYPE_TERMINAL gt_terminal_get_type()
 
-G_DECLARE_FINAL_TYPE (GtTerminal, gt_terminal, KGX, TERMINAL, VteTerminal)
+G_DECLARE_FINAL_TYPE (GtTerminal, gt_terminal, GT, TERMINAL, VteTerminal)
 
 void gt_terminal_accept_paste (GtTerminal* self, const char* text);
 

@@ -44,7 +44,7 @@ static void gt_watcher_class_init(GtWatcherClass *klass)
 
 
 static void clear_watch(struct ProcessWatch *watch)
-    {
+{
     g_return_if_fail (watch != NULL);
 
     g_clear_pointer (&watch->process, gt_process_unref);
@@ -132,7 +132,7 @@ static gboolean watch(gpointer data)
 
     g_tree_foreach (self->children, remove_dead, &dead);
 
-    // We can't modify self->chilren whilst walking it
+    // We can't modify self->children whilst walking it
     for (int i = 0; i < dead.dead->len; i++) {
         g_tree_remove (self->children, g_ptr_array_index (dead.dead, i));
     }
@@ -168,12 +168,6 @@ static void gt_watcher_init(GtWatcher *self)
     set_watcher (self, TRUE);
 }
 
-
-/**
- * gt_watcher_get_default:
- * 
- * Returns: (transfer none): the #GtWatcher singleton
- */
 GtWatcher *gt_watcher_get_default(void)
 {
     static GtWatcher *instance;
@@ -201,7 +195,6 @@ void gt_watcher_add(GtWatcher *self, GPid pid, GtTab *page)
 
     g_tree_insert (self->watching, GINT_TO_POINTER (pid), watch);
 }
-
 
 void gt_watcher_remove(GtWatcher *self, GPid pid)
 {

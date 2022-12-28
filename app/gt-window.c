@@ -90,7 +90,7 @@ static gboolean gt_window_close_request(GtkWindow *window)
             gt_settings_set_custom_size (self->settings, width, height);
         }
 
-        return FALSE; // Aka no, I don’t want to block closing
+        return FALSE;
     }
 
     dlg = gt_close_dialog_new (GT_CONTEXT_WINDOW, children);
@@ -101,7 +101,7 @@ static gboolean gt_window_close_request(GtkWindow *window)
 
     gtk_widget_show (dlg);
 
-    return TRUE; // Block the close
+    return TRUE;
 }
 
 
@@ -142,8 +142,13 @@ static GtPages *create_tearoff_host(GtPages *pages, GtWindow *self)
 
     gtk_window_get_default_size (GTK_WINDOW (self), &width, &height);
 
-    new_window = g_object_new (GT_TYPE_WINDOW, "application", application, "settings", self->settings, "default-width",
-                               width, "default-height", height, NULL);
+    new_window = g_object_new (GT_TYPE_WINDOW,
+                               "application", application,
+                               "settings", self->settings,
+                               "default-width", width,
+                               "default-height", height,
+                               NULL);
+
     gtk_window_present (GTK_WINDOW (new_window));
 
     return GT_PAGES (new_window->pages);
@@ -159,13 +164,15 @@ static void status_changed(GObject *object, GParamSpec *pspec, gpointer data)
 
     if (status & GT_REMOTE) {
         gtk_widget_add_css_class (GTK_WIDGET (self), GT_WINDOW_STYLE_REMOTE);
-    } else {
+    }
+    else {
         gtk_widget_remove_css_class (GTK_WIDGET (self), GT_WINDOW_STYLE_REMOTE);
     }
 
     if (status & GT_PRIVILEGED) {
         gtk_widget_add_css_class (GTK_WIDGET (self), GT_WINDOW_STYLE_ROOT);
-    } else {
+    }
+    else {
         gtk_widget_remove_css_class (GTK_WIDGET (self), GT_WINDOW_STYLE_ROOT);
     }
 }
@@ -285,20 +292,30 @@ static void detach_tab_activated(GSimpleAction *action, GVariant *parameter, gpo
 
 static void about_activated(GSimpleAction *action, GVariant *parameter, gpointer data) 
 {
-    const char *developers[] = {"Zander Brown <zbrown@gnome.org>", NULL};
-    const char *designers[] = {"Tobias Bernard", NULL};
     g_autofree char *copyright = NULL;
+    const char *designers[] = {"Ding Jing", NULL};
+    const char *developers[] = {"Ding Jing <dingjing@live.cn>", NULL};
+    g_autoptr(GDate) date = g_date_new();
+    g_date_set_time_t (date, time (NULL));
+    if (2022 <= g_date_get_year (date)) {
+        copyright = g_strdup_printf (_("© 2022 Ding Jing"));
+    }
+    else {
+        copyright = g_strdup_printf (_("© 2022 - %d Ding Jing"), g_date_get_year (date));
+    }
 
-    /* Translators: %s is the year range */
-    copyright = g_strdup_printf (_("© %s Zander Brown"), "2019-2021");
-
-    adw_show_about_window (GTK_WINDOW (data), "application-name", GT_DISPLAY_NAME, "application-icon",
-                           GT_APPLICATION_ID, "developer-name", _("The GNOME Project"), "issue-url",
-                           "https://gitlab.gnome.org/GNOME/console/-/issues/new", "version", PACKAGE_VERSION,
-                           "developers", developers, "designers", designers,
-        /* Translators: Credit yourself here */
-                           "translator-credits", _("translator-credits"), "copyright", copyright, "license-type",
-                           GTK_LICENSE_GPL_3_0, NULL);
+    adw_show_about_window (GTK_WINDOW (data),
+                           "application-name", GT_DISPLAY_NAME,
+                           "application-icon", GT_APPLICATION_ID,
+                           "developer-name", _("The Graceful Linux Project"),
+                           "issue-url", "https://github.com/dingjingmaster/graceful-terminator/issues",
+                           "version", PACKAGE_VERSION,
+                           "developers", developers,
+                           "designers", designers,
+                           "translator-credits", _("translator-credits"),
+                           "copyright", copyright,
+                           "license-type", GTK_LICENSE_MIT_X11,
+                           NULL);
 }
 
 
@@ -310,15 +327,21 @@ static void tab_switcher_activated(GSimpleAction *action, GVariant *parameter, g
 }
 
 
-static GActionEntry win_entries[] = {{"new-window",   new_activated,          NULL, NULL, NULL},
-                                     {"new-tab",      new_tab_activated,      NULL, NULL, NULL},
-                                     {"close-tab",    close_tab_activated,    NULL, NULL, NULL},
-                                     {"about",        about_activated,        NULL, NULL, NULL},
-                                     {"tab-switcher", tab_switcher_activated, NULL, NULL, NULL},};
+static GActionEntry win_entries[] =
+{
+    {"new-window",   new_activated,          NULL, NULL, NULL},
+    {"new-tab",      new_tab_activated,      NULL, NULL, NULL},
+    {"close-tab",    close_tab_activated,    NULL, NULL, NULL},
+    {"about",        about_activated,        NULL, NULL, NULL},
+    {"tab-switcher", tab_switcher_activated, NULL, NULL, NULL},
+};
 
 
-static GActionEntry tab_entries[] = {{"close",  close_tab_activated,  NULL, NULL, NULL},
-                                     {"detach", detach_tab_activated, NULL, NULL, NULL},};
+static GActionEntry tab_entries[] =
+{
+    {"close",  close_tab_activated,  NULL, NULL, NULL},
+    {"detach", detach_tab_activated, NULL, NULL, NULL},
+};
 
 
 static gboolean update_title(GBinding *binding, const GValue *from_value, GValue *to_value, gpointer data)
@@ -401,8 +424,7 @@ static void gt_window_init(GtWindow *self)
     gtk_widget_add_css_class (GTK_WIDGET (self), "devel");
 #endif
 
-    g_object_bind_property_full (self->pages, "title", self, "title", G_BINDING_SYNC_CREATE, update_title, NULL, NULL,
-                                 NULL);
+    g_object_bind_property_full (self->pages, "title", self, "title", G_BINDING_SYNC_CREATE, update_title, NULL, NULL, NULL);
 
     g_object_bind_property (self, "title", self->window_title, "title", G_BINDING_SYNC_CREATE);
 

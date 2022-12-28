@@ -777,7 +777,7 @@ void gt_tab_accept_drop(GtTab *self, const GValue *value)
     text = gt_util_concat_uris (uris, NULL);
 
     if (priv->terminal) {
-        gt_terminal_accept_paste (KGX_TERMINAL (priv->terminal), text);
+        gt_terminal_accept_paste (GT_TERMINAL (priv->terminal), text);
     }
 }
 

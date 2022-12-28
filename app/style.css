@@ -164,8 +164,6 @@ themeswitcher .check {
   margin: 3px;
 }
 
-/* Adapted from https://gitlab.gnome.org/GNOME/gnome-text-editor/-/blob/bf8c0c249f06a0be69e65aed3b786ba02a9f999e/src/TextEditor.css#L51 */
-
 themeswitcher checkbutton {
   outline-offset: 1px;
   transition: none;
