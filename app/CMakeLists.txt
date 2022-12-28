@@ -73,17 +73,18 @@ FILE(GLOB GT_SRC
 
         ${CMAKE_SOURCE_DIR}/app/rgba.h
 
-        xdg-fm1.h
-        xdg-fm1.c
+        ${CMAKE_SOURCE_DIR}/app/xdg-fm1.h
+        ${CMAKE_SOURCE_DIR}/app/xdg-fm1.c
+        ${CMAKE_SOURCE_DIR}/app/menus.ui
 
-        logo.txt
-
-        menus.ui
+        ${CMAKE_SOURCE_DIR}/app/gt-marshals.list
         )
 
 execute_process(
         COMMAND glib-compile-resources --generate-header ${CMAKE_SOURCE_DIR}/app/gt.gresource.xml --target=${CMAKE_SOURCE_DIR}/app/gt-resources.h
         COMMAND glib-compile-resources --generate-source ${CMAKE_SOURCE_DIR}/app/gt.gresource.xml --target=${CMAKE_SOURCE_DIR}/app/gt-resources.c
+        COMMAND glib-genmarshal --prefix gt_marshals --internal --header ${CMAKE_SOURCE_DIR}/app/gt-marshals.list --output ${CMAKE_SOURCE_DIR}/app/gt-marshals.h
+        COMMAND glib-genmarshal --prefix gt_marshals --internal --include-header gt-marshals.h --body ${CMAKE_SOURCE_DIR}/app/gt-marshals.list --output ${CMAKE_SOURCE_DIR}/app/gt-marshals.c
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/app/)
 
 add_executable(graceful-terminator ${CMAKE_SOURCE_DIR}/app/main.c ${GT_SRC})
