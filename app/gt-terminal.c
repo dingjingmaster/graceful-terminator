@@ -18,19 +18,29 @@
 /*       Regex adapted from TerminalWidget.vala in Pantheon Terminal       */
 
 #define USERCHARS "-[:alnum:]"
+
 #define USERCHARS_CLASS "[" USERCHARS "]"
+
 #define PASSCHARS_CLASS "[-[:alnum:]\\Q,?;.:/!%$^*&~\"#'\\E]"
+
 #define HOSTCHARS_CLASS "[-[:alnum:]]"
+
 #define HOST HOSTCHARS_CLASS "+(\\." HOSTCHARS_CLASS "+)*"
+
 #define PORT "(?:\\:[[:digit:]]{1,5})?"
+
 #define PATHCHARS_CLASS "[-[:alnum:]\\Q_$.+!*,;:@&=?/~#%\\E]"
+
 #define PATHTERM_CLASS "[^\\Q]'.}>) \t\r\n,\"\\E]"
+
 #define SCHEME "(?:news:|telnet:|nntp:|file:\\/|https?:|ftps?:|sftp:|webcal:\n" \
                "|irc:|sftp:|ldaps?:|nfs:|smb:|rsync:|"                          \
                "ssh:|rlogin:|telnet:|git:\n"                                    \
                "|git\\+ssh:|bzr:|bzr\\+ssh:|svn:|svn\\"                         \
                "+ssh:|hg:|mailto:|magnet:)"
+
 #define USERPASS USERCHARS_CLASS "+(?:" PASSCHARS_CLASS "+)?"
+
 #define URLPATH "(?:(/" PATHCHARS_CLASS "+(?:[(]" PATHCHARS_CLASS "*[)])*" PATHCHARS_CLASS "*)*" PATHTERM_CLASS ")?"
 
 #define GT_TERMINAL_N_LINK_REGEX 5
@@ -507,7 +517,8 @@ static void clear_paste_data(gpointer data)
 
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (PasteData, clear_paste_data)
 
-static void paste_response(PasteData *data) {
+static void paste_response(PasteData *data)
+{
     g_autoptr (PasteData) paste = data;
 
     vte_terminal_paste_text (VTE_TERMINAL (paste->dest), paste->text);
@@ -568,8 +579,7 @@ static void location_changed(GtTerminal *self)
 {
     gboolean value;
 
-    value = vte_terminal_get_current_file_uri (VTE_TERMINAL (self))
-            || vte_terminal_get_current_directory_uri (VTE_TERMINAL (self));
+    value = vte_terminal_get_current_file_uri (VTE_TERMINAL (self)) || vte_terminal_get_current_directory_uri (VTE_TERMINAL (self));
 
     gtk_widget_action_set_enabled (GTK_WIDGET (self), "term.show-in-files", value);
 

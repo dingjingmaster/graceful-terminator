@@ -2,9 +2,7 @@
 
 #include "gt-config.h"
 
-/* Copied from GtkInspector code */
 #define XFT_DPI_MULTIPLIER (96.0 * PANGO_SCALE)
-
 
 struct _GtTabButton
 {

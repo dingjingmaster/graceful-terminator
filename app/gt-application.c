@@ -268,7 +268,7 @@ static int gt_application_handle_local_options (GApplication *app, GVariantDict 
             print_logo (w.ws_col);
             print_center (_("King’s Cross"), -1, w.ws_col);
             print_center (PACKAGE_VERSION, -1, w.ws_col);
-            print_center (_("Terminal Emulator"), -1, w.ws_col);
+            print_center (_("Graceful Terminal"), -1, w.ws_col);
             print_center (copyright, -1, w.ws_col);
             print_center (_("MIT"), -1, w.ws_col);
 
@@ -317,7 +317,6 @@ static GOptionEntry entries[] =
 
 static void new_window_activated (GSimpleAction* action, GVariant* parameter, gpointer data)
 {
-    DEBUG("")
     GtApplication *self = GT_APPLICATION (data);
     guint32 timestamp = GDK_CURRENT_TIME;
 
@@ -327,7 +326,6 @@ static void new_window_activated (GSimpleAction* action, GVariant* parameter, gp
 
 static void new_tab_activated (GSimpleAction* action, GVariant* parameter, gpointer data)
 {
-    DEBUG("")
     GtApplication *self = GT_APPLICATION (data);
     guint32 timestamp = GDK_CURRENT_TIME;
     g_autoptr (GFile) dir = NULL;
@@ -343,7 +341,6 @@ static void new_tab_activated (GSimpleAction* action, GVariant* parameter, gpoin
 
 static void focus_activated (GSimpleAction* action, GVariant* parameter, gpointer data)
 {
-    DEBUG("")
     GtApplication *self = GT_APPLICATION (data);
     GtTab *page = gt_application_lookup_page (self, g_variant_get_uint32 (parameter));
     GtPages *pages = gt_tab_get_pages (page);
@@ -356,7 +353,6 @@ static void focus_activated (GSimpleAction* action, GVariant* parameter, gpointe
 
 static void zoom_out_activated (GSimpleAction* action, GVariant* parameter, gpointer data)
 {
-    DEBUG("")
     GtApplication *self = GT_APPLICATION (data);
 
     gt_settings_decrease_scale (self->settings);
@@ -365,7 +361,6 @@ static void zoom_out_activated (GSimpleAction* action, GVariant* parameter, gpoi
 
 static void zoom_normal_activated (GSimpleAction* action, GVariant* parameter, gpointer data)
 {
-    DEBUG("")
     GtApplication *self = GT_APPLICATION (data);
 
     gt_settings_reset_scale (self->settings);
@@ -452,7 +447,6 @@ static void gt_application_init (GtApplication *self)
 
 static void page_died (gpointer data, GObject *deadObject)
 {
-    DEBUG("")
     GtApplication *self = GT_APPLICATION (g_application_get_default ());
 
     g_tree_remove (self->pages, data);
@@ -472,7 +466,6 @@ void gt_application_add_page (GtApplication* self, GtTab* page)
 
 GtTab* gt_application_lookup_page (GtApplication* self, guint id)
 {
-    DEBUG("")
     g_return_val_if_fail (GT_IS_APPLICATION (self), NULL);
 
     return g_tree_lookup (self->pages, GUINT_TO_POINTER (id));

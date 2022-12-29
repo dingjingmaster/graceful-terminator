@@ -30,7 +30,8 @@ GType gt_close_dialog_context_get_type (void)
 GType gt_theme_get_type (void)
 {
     static gsize gtype_id = 0;
-    static const GEnumValue values[] = {
+    static const GEnumValue values[] =
+    {
         { C_ENUM(GT_THEME_AUTO), "GT_THEME_AUTO", "auto" },
         { C_ENUM(GT_THEME_NIGHT), "GT_THEME_NIGHT", "night" },
         { C_ENUM(GT_THEME_DAY), "GT_THEME_DAY", "day" },
@@ -48,7 +49,8 @@ GType gt_theme_get_type (void)
 GType gt_status_get_type (void)
 {
     static gsize gtype_id = 0;
-    static const GFlagsValue values[] = {
+    static const GFlagsValue values[] =
+    {
         { C_FLAGS(GT_NONE), "GT_NONE", "none" },
         { C_FLAGS(GT_REMOTE), "GT_REMOTE", "remote" },
         { C_FLAGS(GT_PRIVILEGED), "GT_PRIVILEGED", "privileged" },
@@ -64,7 +66,8 @@ GType gt_status_get_type (void)
 GType gt_zoom_get_type (void)
 {
     static gsize gtype_id = 0;
-    static const GEnumValue values[] = {
+    static const GEnumValue values[] =
+    {
         { C_ENUM(GT_ZOOM_IN), "GT_ZOOM_IN", "in" },
         { C_ENUM(GT_ZOOM_OUT), "GT_ZOOM_OUT", "out" },
         { 0, NULL, NULL }

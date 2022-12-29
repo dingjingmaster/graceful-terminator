@@ -38,6 +38,10 @@ int main(int argc, char *argv[])
 
 static GLogWriterOutput log_handler (GLogLevelFlags level, const GLogField* fields, gsize nFields, gpointer udata)
 {
+    if (NULL == g_getenv ("GRACEFUL_TERMINATOR_DEBUG")) {
+        return G_LOG_WRITER_HANDLED;
+    }
+
     const char* logLevel = NULL;
 
     g_autofree char* msg = NULL;
@@ -104,26 +108,32 @@ static GLogWriterOutput log_handler (GLogLevelFlags level, const GLogField* fiel
         write (2, domain, strlen (domain));
         write (2, " ", 1);
     }
-    if (logLevel) {
+
+    {
         write (2, "[", 1);
         write (2, logLevel, strlen (logLevel));
         write (2, "] ", 2);
     }
+
     if (file) {
         write (2, file, strlen (file));
     }
+
     if (line) {
         write (2, ":", 1);
         write (2, line, strlen (line));
         write (2, " ", 1);
     }
+
     if (func) {
         write (2, func, strlen (func));
         write (2, " ", 1);
     }
+
     if (msg) {
         write (2, msg, strlen (msg));
     }
+
     write (2, "\n", 1);
 
     return G_LOG_WRITER_HANDLED;
