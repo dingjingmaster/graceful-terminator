@@ -105,3 +105,4 @@ target_link_directories(graceful-terminator PRIVATE ${GLIB_INCLUDE_DIRS} ${VTE_I
 install(TARGETS graceful-terminator DESTINATION /usr/bin/)
 
 include(${CMAKE_SOURCE_DIR}/app/data/data.cmake)
+

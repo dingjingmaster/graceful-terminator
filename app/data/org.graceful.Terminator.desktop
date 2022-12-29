@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Console
+Name=Graceful Terminator
 Name[zh_CN]=终端
 Name[zh_TW]=终端
 Exec=graceful-terminator
