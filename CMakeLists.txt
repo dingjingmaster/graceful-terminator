@@ -47,6 +47,7 @@ pkg_check_modules(PCRE REQUIRED libpcre2-8)
 pkg_check_modules(VTE REQUIRED vte-2.91-gtk4)
 pkg_check_modules(GTOP REQUIRED libgtop-2.0)
 pkg_check_modules(ADWAITA REQUIRED libadwaita-1)
+pkg_check_modules(NAUTILUS4 libnautilus-extension-4)
 pkg_check_modules(GDS REQUIRED gsettings-desktop-schemas)
 
 include_directories(${VTE_INCLUDE_DIRS})
@@ -59,5 +60,8 @@ include_directories(${PCRE_INCLUDE_DIRS})
 include_directories(${ADWAITA_INCLUDE_DIRS})
 include_directories(${GIO_UNIX_INCLUDE_DIRS})
 
-
 add_subdirectory(app)
+
+if (${NAUTILUS4_FOUND} OR false)
+add_subdirectory(extensions)
+endif()
