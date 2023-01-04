@@ -4,15 +4,18 @@
 
 #define  GETTEXT_PACKAGE = PROJECT_NAME"-nautilus-menu"
 
+#include "menu-terminator.h"
+
 #include <glib/gi18n-lib.h>
 #include <nautilus-extension.h>
+#include <libnautilus-extension/nautilus-menu.h>
 
 void nautilus_module_initialize (GTypeModule* module)
 {
 //    bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
     bind_textdomain_codeset (PACKAGE_NAME, "UTF-8");
 
-    //
+    mt_menu_terminator_item_provider_load (module);
 }
 
 void nautilus_module_shutdown (void)
