@@ -72,6 +72,16 @@ GLogWriterOutput log_handler (GLogLevelFlags level, const GLogField* fields, gsi
     const char *loc = NULL;
     struct iovec vec[LOG_IOVEC_MAX];
     char s_time[LOG_TIME_MAX] = {0};
+
+    if (g_once_init_enter (&gInit)) {
+        if (0 != _open_file ()) {
+            fprintf (stderr, "open %s failed, error: %s\n", gLogPath, strerror(errno));
+        }
+        g_once_init_leave (&gInit, 1);
+    }
+
+    while (pthread_mutex_lock (&gLogLock)) usleep (1000);
+
     _log_get_time (s_time, sizeof(s_time), 0);
 
     switch (level) {
@@ -101,7 +111,10 @@ GLogWriterOutput log_handler (GLogLevelFlags level, const GLogField* fields, gsi
         }
     }
     for (int i = 0; i < nFields; ++i) {
-        if (0 == g_ascii_strcasecmp ("file", fields[i].key)) {
+#if 0
+        fprintf (stdout, "fields: %s -- %s\n", fields[i].key ? fields[i].key : "<null>", fields[i].value ? fields[i].value : "<null>");
+#endif
+        if (0 == g_ascii_strcasecmp ("file", fields[i].key) || 0 == g_ascii_strcasecmp ("code_file", fields[i].key)) {
             file = fields[i].value;
         } else if (0 == g_ascii_strcasecmp ("func", fields[i].key) || 0 == g_ascii_strcasecmp ("code_func", fields[i].key)) {
             func = fields[i].value;
@@ -114,7 +127,7 @@ GLogWriterOutput log_handler (GLogLevelFlags level, const GLogField* fields, gsi
         } else if (0 == g_ascii_strcasecmp ("loc", fields[i].key)) {
             loc = fields[i].value;
         }
-#if 1
+#if 0
         else {
             write (2, fields[i].key, strlen (fields[i].key));
             write (2, "\n", 1);
@@ -161,15 +174,6 @@ GLogWriterOutput log_handler (GLogLevelFlags level, const GLogField* fields, gsi
         vec[++i].iov_base = "\n";
         vec[i].iov_len = 1;
     }
-
-    if (g_once_init_enter (&gInit)) {
-        if (0 != _open_file ()) {
-            fprintf (stderr, "open %s failed, error: %s\n", gLogPath, strerror(errno));
-        }
-        g_once_init_leave (&gInit, 1);
-    }
-
-    while (pthread_mutex_lock (&gLogLock)) usleep (1000);
 
     {
         write (gLogFd, PACKAGE_NAME, strlen (PACKAGE_NAME));
