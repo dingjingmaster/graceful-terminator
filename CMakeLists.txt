@@ -10,6 +10,7 @@ set(PROJECT_VERSION_PATCH 0)
 
 add_definitions(-w -g
         -D PACKAGE_NAME=\\"${PROJECT_NAME}\\"
+        -D INSTALL_NAME=\\"${PROJECT_NAME}\\"
         -D G_LOG_DOMAIN=\\"${PROJECT_NAME}\\"
         -D PACKAGE_VERSION=\\"${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}\\"
         )

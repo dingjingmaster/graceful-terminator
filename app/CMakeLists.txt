@@ -1,6 +1,7 @@
 
 FILE(GLOB GT_SRC
         ${CMAKE_SOURCE_DIR}/app/gt-log.h
+        ${CMAKE_SOURCE_DIR}/app/gt-log.c
 
         ${CMAKE_SOURCE_DIR}/app/gt-enums.h
         ${CMAKE_SOURCE_DIR}/app/gt-enums.c

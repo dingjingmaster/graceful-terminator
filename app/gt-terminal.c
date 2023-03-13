@@ -4,6 +4,8 @@
 #include <adwaita.h>
 #include <vte/vte.h>
 
+#include "gt-log.h"
+
 #define PCRE2_CODE_UNIT_WIDTH 0
 
 #include <pcre2.h>
@@ -289,6 +291,7 @@ static void context_menu(GtTerminal *self, double x, double y, gboolean touch)
 
 static void menu_popup_activated(GtTerminal *self)
 {
+    LOG_DEBUG("menu popup");
     context_menu (self, 1, 1, FALSE);
 }
 
@@ -316,6 +319,7 @@ static void copy_activated(GtTerminal *self)
 {
     GdkClipboard *clipboard = gtk_widget_get_clipboard (GTK_WIDGET (self));
     g_autofree char *text = vte_terminal_get_text_selected (VTE_TERMINAL (self), VTE_FORMAT_TEXT);
+    LOG_DEBUG("copy text: %s", text);
     gdk_clipboard_set_text (clipboard, text);
 }
 
@@ -338,13 +342,14 @@ static void got_text(GdkClipboard *cb, GAsyncResult *result, GtTerminal *self)
 static void paste_activated(GtTerminal *self)
 {
     GdkClipboard *cb = gtk_widget_get_clipboard (GTK_WIDGET (self));
-
+    LOG_DEBUG("paste activated!");
     gdk_clipboard_read_text_async (cb, NULL, (GAsyncReadyCallback) got_text, self);
 }
 
 
 static void select_all_activated(GtTerminal *self)
 {
+    LOG_DEBUG("select all");
     vte_terminal_select_all (VTE_TERMINAL (self));
 }
 
@@ -422,7 +427,7 @@ static void show_in_files_activated(GtTerminal *self)
     }
 
     if (uri == NULL) {
-        g_warning ("term.show-in-files: no file");
+        LOG_WARNING("term.show-in-files: no file");
         return;
     }
 
@@ -627,7 +632,7 @@ static void gt_terminal_init(GtTerminal *self)
 
     gtk_widget_action_set_enabled (GTK_WIDGET (self), "term.open-link", FALSE);
     gtk_widget_action_set_enabled (GTK_WIDGET (self), "term.copy-link", FALSE);
-    gtk_widget_action_set_enabled (GTK_WIDGET (self), "term.copy", FALSE);
+    gtk_widget_action_set_enabled (GTK_WIDGET (self), "term.copy", TRUE);
     gtk_widget_action_set_enabled (GTK_WIDGET (self), "term.show-in-files", FALSE);
 
     vte_terminal_set_mouse_autohide (VTE_TERMINAL (self), TRUE);
@@ -676,6 +681,7 @@ void gt_terminal_accept_paste(GtTerminal *self, const char *text)
     g_autoptr (PasteData) paste = g_new0 (PasteData, 1);
     gsize len;
 
+    LOG_DEBUG("paste: %s", text);
     if (!text || !text[0]) {
         return;
     }

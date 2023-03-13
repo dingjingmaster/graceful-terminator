@@ -621,7 +621,7 @@ static inline GtStatus push_type(GHashTable *table, GPid pid, GtProcess *process
 {
     g_hash_table_insert (table, GINT_TO_POINTER (pid), process != NULL ? g_rc_box_acquire (process) : NULL);
 
-    g_debug ("Now %i %X", g_hash_table_size (table), status);
+//    g_debug ("Now %i %X", g_hash_table_size (table), status);
 
     return status;
 }

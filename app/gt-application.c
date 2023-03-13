@@ -528,7 +528,7 @@ GtTab* gt_application_add_terminal (GtApplication* self, GtWindow* existingWindo
             gtk_window_get_default_size (active_window, &width, &height);
         }
 
-        g_debug ("new window (%i×%i)", width, height);
+        DEBUG("new window (%i×%i)", width, height);
 
         window = g_object_new (GT_TYPE_WINDOW,
                                "application", self,

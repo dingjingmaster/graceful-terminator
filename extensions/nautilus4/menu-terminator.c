@@ -35,5 +35,5 @@ void mt_menu_terminator_item_provider_load (GTypeModule* module)
 
     gMenuTerminatorItemProviderType = g_type_module_register_type (module, G_TYPE_OBJECT, "GracefulTerminatorNautilusPlugin", &info, 0);
 
-    g_type_module_add_interface (module, gMenuTerminatorItemProviderType, NAUTILUS_TYPE_)
+//    g_type_module_add_interface (module, gMenuTerminatorItemProviderType, NAUTILUS_TYPE_)
 }
