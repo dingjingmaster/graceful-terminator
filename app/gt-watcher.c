@@ -153,7 +153,7 @@ static inline void set_watcher(GtWatcher *self, gboolean focused)
 
     // Slow down polling when nothing is focused
     self->timeout = g_timeout_add (focused ? 500 : 2000, watch, self);
-    g_source_set_name_by_id (self->timeout, "[kgx] child watcher");
+    g_source_set_name_by_id (self->timeout, "[gt] child watcher");
 }
 
 

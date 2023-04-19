@@ -2,6 +2,7 @@
 
 #include <glib/gi18n.h>
 
+#include "gt-log.h"
 #include "gt-terminal.h"
 #include "gt-vte-util.h"
 #include "gt-proxy-info.h"
@@ -249,6 +250,7 @@ static void path_changed(GObject *object, GParamSpec *pspec, GtSimpleTab *self)
 
 static void gt_simple_tab_class_init(GtSimpleTabClass *klass)
 {
+    LOG_DEBUG("");
     GObjectClass *object_class = G_OBJECT_CLASS   (klass);
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
     GtTabClass *page_class = GT_TAB_CLASS (klass);

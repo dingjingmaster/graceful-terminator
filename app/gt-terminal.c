@@ -16,6 +16,7 @@
 #include "gt-settings.h"
 #include "gt-terminal.h"
 #include "gt-marshals.h"
+#include "gt-context-menu.h"
 
 /*       Regex adapted from TerminalWidget.vala in Pantheon Terminal       */
 
@@ -267,10 +268,9 @@ static void context_menu(GtTerminal *self, double x, double y, gboolean touch)
     app = GTK_APPLICATION (g_application_get_default ());
 
     if (!self->popup_menu) {
-        GMenu *model = gtk_application_get_menu_by_id (app, "context-menu");
-
-        self->popup_menu = gtk_popover_menu_new_from_model (G_MENU_MODEL (model));
-
+        self->popup_menu = gt_context_menu_new(); //gtk_popover_menu_new_from_model (G_MENU_MODEL (model));
+//        GMenu* model = gtk_application_get_menu_by_id (app, "context-menu");
+//        self->popup_menu = gtk_popover_menu_new_from_model (G_MENU_MODEL (model));
         gtk_widget_set_parent (self->popup_menu, GTK_WIDGET (self));
     }
 
@@ -279,19 +279,20 @@ static void context_menu(GtTerminal *self, double x, double y, gboolean touch)
     update_menu_position (self);
 
     if (x > -1 && y > -1) {
-        GdkRectangle rect = {x, y, 1, 1};
+        GdkRectangle rect = {(int) x, (int) y, 1, 1};
         gtk_popover_set_pointing_to (GTK_POPOVER (self->popup_menu), &rect);
-    } else {
+    }
+    else {
         gtk_popover_set_pointing_to (GTK_POPOVER (self->popup_menu), NULL);
     }
 
+    // 弹出 右键菜单
     gtk_popover_popup (GTK_POPOVER (self->popup_menu));
 }
 
 
 static void menu_popup_activated(GtTerminal *self)
 {
-    LOG_DEBUG("menu popup");
     context_menu (self, 1, 1, FALSE);
 }
 
@@ -331,7 +332,7 @@ static void got_text(GdkClipboard *cb, GAsyncResult *result, GtTerminal *self)
 
     text = gdk_clipboard_read_text_finish (cb, result, &error);
     if (error) {
-        g_critical ("Couldn't paste text: %s\n", error->message);
+        LOG_ERROR("Couldn't paste text: %s", error->message);
         return;
     }
 
@@ -385,7 +386,7 @@ static void complete_call(GObject *source, GAsyncResult *res, gpointer data)
     }
 
     if (error) {
-        g_warning ("term.show-in-files: D-Bus call failed %s", error->message);
+        LOG_WARNING("term.show-in-files: D-Bus call failed %s", error->message);
     }
 }
 
@@ -398,9 +399,8 @@ static void got_proxy(GObject *source, GAsyncResult *res, gpointer data)
     g_auto (GStrv) uris = g_steal_pointer (&show->uris);
 
     fm = xdg_file_manager1_proxy_new_finish (res, &error);
-
     if (error) {
-        g_warning ("term.show-in-files: D-Bus connect failed %s", error->message);
+        LOG_WARNING("term.show-in-files: D-Bus connect failed %s", error->message);
         return;
     }
 
@@ -471,6 +471,7 @@ static void gt_terminal_direction_changed(GtkWidget *widget, GtkTextDirection pr
 
 static void gt_terminal_class_init(GtTerminalClass *klass)
 {
+    LOG_DEBUG("gt_terminal_class_init")
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
@@ -482,7 +483,6 @@ static void gt_terminal_class_init(GtTerminalClass *klass)
     widget_class->direction_changed = gt_terminal_direction_changed;
 
     pspecs[PROP_SETTINGS] = g_param_spec_object ("settings", NULL, NULL, GT_TYPE_SETTINGS, G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
-
     pspecs[PROP_PATH] = g_param_spec_object ("path", "Path", "Current path", G_TYPE_FILE, G_PARAM_READABLE);
 
     g_object_class_install_properties (object_class, LAST_PROP, pspecs);
@@ -490,13 +490,13 @@ static void gt_terminal_class_init(GtTerminalClass *klass)
     signals[SIZE_CHANGED] = g_signal_new ("size-changed", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST, 0, NULL, NULL,
                                           gt_marshals_VOID__UINT_UINT, G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
 
-    gtk_widget_class_install_action (widget_class, "menu.popup", NULL, (GtkWidgetActionActivateFunc) menu_popup_activated);
-    gtk_widget_class_install_action (widget_class, "term.open-link", NULL, (GtkWidgetActionActivateFunc) open_link_activated);
-    gtk_widget_class_install_action (widget_class, "term.copy-link", NULL, (GtkWidgetActionActivateFunc) copy_link_activated);
-    gtk_widget_class_install_action (widget_class, "term.copy", NULL, (GtkWidgetActionActivateFunc) copy_activated);
-    gtk_widget_class_install_action (widget_class, "term.paste", NULL, (GtkWidgetActionActivateFunc) paste_activated);
-    gtk_widget_class_install_action (widget_class, "term.select-all", NULL, (GtkWidgetActionActivateFunc) select_all_activated);
-    gtk_widget_class_install_action (widget_class, "term.show-in-files", NULL, (GtkWidgetActionActivateFunc) show_in_files_activated);
+    gtk_widget_class_install_action (widget_class, "menu.popup",            NULL, (GtkWidgetActionActivateFunc) menu_popup_activated);
+    gtk_widget_class_install_action (widget_class, "term.open-link",        NULL, (GtkWidgetActionActivateFunc) open_link_activated);
+    gtk_widget_class_install_action (widget_class, "term.copy-link",        NULL, (GtkWidgetActionActivateFunc) copy_link_activated);
+    gtk_widget_class_install_action (widget_class, "term.copy",             NULL, (GtkWidgetActionActivateFunc) copy_activated);
+    gtk_widget_class_install_action (widget_class, "term.paste",            NULL, (GtkWidgetActionActivateFunc) paste_activated);
+    gtk_widget_class_install_action (widget_class, "term.select-all",       NULL, (GtkWidgetActionActivateFunc) select_all_activated);
+    gtk_widget_class_install_action (widget_class, "term.show-in-files",    NULL, (GtkWidgetActionActivateFunc) show_in_files_activated);
 
     gtk_widget_class_add_binding_action (widget_class, GDK_KEY_F10, GDK_SHIFT_MASK, "menu.popup", NULL);
     gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Menu, 0, "menu.popup", NULL);

@@ -1,12 +1,13 @@
 #include "gt-config.h"
 
-#include <glib/gi18n.h>
-#include <vte/vte.h>
 #include <math.h>
+#include <vte/vte.h>
 #include <adwaita.h>
+#include <glib/gi18n.h>
 
 #include "rgba.h"
 
+#include "gt-log.h"
 #include "gt-pages.h"
 #include "gt-window.h"
 #include "gt-watcher.h"
@@ -42,12 +43,14 @@ static void gt_window_set_property(GObject *object, guint property_id, const GVa
     GtWindow *self = GT_WINDOW (object);
 
     switch (property_id) {
-        case PROP_SETTINGS:
+        case PROP_SETTINGS: {
             g_set_object (&self->settings, g_value_get_object (value));
             break;
-        default:
+        }
+        default: {
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
             break;
+        }
     }
 }
 
@@ -57,12 +60,14 @@ static void gt_window_get_property(GObject *object, guint property_id, GValue *v
     GtWindow *self = GT_WINDOW (object);
 
     switch (property_id) {
-        case PROP_SETTINGS:
+        case PROP_SETTINGS: {
             g_value_set_object (value, self->settings);
             break;
-        default:
+        }
+        default: {
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
             break;
+        }
     }
 }
 
@@ -109,7 +114,8 @@ static void active_changed(GObject *object, GParamSpec *pspec, gpointer data)
 {
     if (gtk_window_is_active (GTK_WINDOW (object))) {
         gt_watcher_push_active (gt_watcher_get_default ());
-    } else {
+    }
+    else {
         gt_watcher_pop_active (gt_watcher_get_default ());
     }
 }
@@ -121,14 +127,17 @@ static void zoom(GtPages *pages, GtZoom dir, GtWindow *self)
     GtkApplication *app = gtk_window_get_application (GTK_WINDOW (self));
 
     switch (dir) {
-        case GT_ZOOM_IN:
+        case GT_ZOOM_IN: {
             action = g_action_map_lookup_action (G_ACTION_MAP (app), "zoom-in");
             break;
-        case GT_ZOOM_OUT:
+        }
+        case GT_ZOOM_OUT: {
             action = g_action_map_lookup_action (G_ACTION_MAP (app), "zoom-out");
             break;
-        default:
+        }
+        default: {
             g_return_if_reached ();
+        }
     }
     g_action_activate (action, NULL);
 }
@@ -229,10 +238,10 @@ static void gt_window_class_init(GtWindowClass *klass)
     gtk_widget_class_bind_template_callback (widget_class, active_changed);
 
     gtk_widget_class_bind_template_callback (widget_class, zoom);
-    gtk_widget_class_bind_template_callback (widget_class, create_tearoff_host);
+    gtk_widget_class_bind_template_callback (widget_class, new_tab_cb);
     gtk_widget_class_bind_template_callback (widget_class, status_changed);
     gtk_widget_class_bind_template_callback (widget_class, extra_drag_drop);
-    gtk_widget_class_bind_template_callback (widget_class, new_tab_cb);
+    gtk_widget_class_bind_template_callback (widget_class, create_tearoff_host);
 }
 
 
@@ -347,7 +356,6 @@ static GActionEntry tab_entries[] =
 static gboolean update_title(GBinding *binding, const GValue *from_value, GValue *to_value, gpointer data)
 {
     const char *title = g_value_get_string (from_value);
-
     if (!title) {
         title = GT_DISPLAY_NAME;
     }

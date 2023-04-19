@@ -17,12 +17,12 @@
     <section>
       <item>
         <attribute name="label" translatable="yes">_Copy</attribute>
-        <attribute name="action">term.copy</attribute>
+        <!-- <attribute name="action">term.copy</attribute> -->
         <attribute name="hidden-when">action-disabled</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">_Paste</attribute>
-        <attribute name="action">term.paste</attribute>
+        <!--<attribute name="action">term.paste</attribute> -->
         <attribute name="hidden-when">action-disabled</attribute>
       </item>
       <item>

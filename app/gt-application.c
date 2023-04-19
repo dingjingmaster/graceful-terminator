@@ -54,15 +54,15 @@ static void gt_application_activate (GApplication *app)
 
 static void gt_application_startup (GApplication *app)
 {
-    const char *const newWindowAccel[] =    {"<shift><primary>n",  NULL};
-    const char *const newTabAccel[] =       {"<shift><primary>t",  NULL};
-    const char *const closeTabAccel[] =     {"<shift><primary>w",  NULL};
-    const char *const copyAccel[] =         {"<shift><primary>c",  NULL};
-    const char *const pasteAccel[] =        {"<shift><primary>v",  NULL};
-    const char *const findAccel[] =         {"<shift><primary>f",  NULL};
-    const char *const zoomInAccel[] =       {"<primary>plus",      NULL};
-    const char *const zoomOutAccel[] =      {"<primary>minus",     NULL};
-    const char *const zoomNormalAccel[] =   {"<primary>0",         NULL};
+    const char* const newWindowAccel[] =    {"<shift><primary>n",  NULL};
+    const char* const newTabAccel[] =       {"<shift><primary>t",  NULL};
+    const char* const closeTabAccel[] =     {"<shift><primary>w",  NULL};
+    const char* const copyAccel[] =         {"<shift><primary>c",  NULL};
+    const char* const pasteAccel[] =        {"<shift><primary>v",  NULL};
+    const char* const findAccel[] =         {"<shift><primary>f",  NULL};
+    const char* const zoomInAccel[] =       {"<primary>plus",      NULL};
+    const char* const zoomOutAccel[] =      {"<primary>minus",     NULL};
+    const char* const zoomNormalAccel[] =   {"<primary>0",         NULL};
 
     g_resources_register (gt_get_resource ());
 
@@ -132,8 +132,8 @@ static int gt_application_command_line (GApplication* app, GApplicationCommandLi
     gboolean tab;
     g_autoptr (GFile) path = NULL;
 
-    options = g_application_command_line_get_options_dict (cli);
     cwd = g_application_command_line_get_cwd (cli);
+    options = g_application_command_line_get_options_dict (cli);
 
     g_variant_dict_lookup (options, "working-directory", "^&ay", &workingDir);
     g_variant_dict_lookup (options, "title", "&s", &title);
@@ -142,13 +142,11 @@ static int gt_application_command_line (GApplication* app, GApplicationCommandLi
 
     if (g_variant_dict_lookup (options, "set-shell", "^as", &shell) && shell) {
         gt_settings_set_custom_shell (self->settings, shell);
-
         return EXIT_SUCCESS;
     }
 
     if (g_variant_dict_lookup (options, "set-scrollback", "x", &scrollBack)) {
         gt_settings_set_scrollback (self->settings, scrollBack);
-
         return EXIT_SUCCESS;
     }
 
@@ -178,7 +176,6 @@ static int gt_application_command_line (GApplication* app, GApplicationCommandLi
             can_exec_directly = (program != NULL);
         }
 
-
         if (can_exec_directly) {
             argv = g_new0 (char *, 2);
             argv[0] = g_strdup (command);
@@ -194,7 +191,8 @@ static int gt_application_command_line (GApplication* app, GApplicationCommandLi
 
     if (g_variant_dict_lookup (options, "tab", "b", &tab) && tab) {
         gt_application_add_terminal (self, GT_WINDOW (gtk_application_get_active_window (GTK_APPLICATION (self))), timestamp, path, argv, title);
-    } else {
+    }
+    else {
         gt_application_add_terminal (self, NULL, timestamp, path, argv, title);
     }
 
@@ -301,16 +299,16 @@ static void gt_application_class_init (GtApplicationClass *klass)
 
 static GOptionEntry entries[] =
 {
-    {"version", 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL},
-    {"about", 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL},
-    {"tab", 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL},
-    {"command", 'e', 0, G_OPTION_ARG_FILENAME, NULL, N_("Execute the argument to this option inside the terminal"), N_("COMMAND")},
-    {"working-directory", 0, 0, G_OPTION_ARG_FILENAME, NULL, N_("Set the working directory"), N_("DIRNAME")},
-    {"wait", 0, 0, G_OPTION_ARG_NONE, NULL, N_("Wait until the child exits (TODO)"), NULL},
-    {"title", 'T', 0, G_OPTION_ARG_STRING, NULL, N_("Set the initial window title"), N_("TITLE")},
-    {"set-shell", 0, 0, G_OPTION_ARG_STRING_ARRAY, NULL, N_("ADVANCED: Set the shell to launch"), N_("SHELL")},
-    {"set-scrollback", 0, 0, G_OPTION_ARG_INT64, NULL, N_("ADVANCED: Set the scrollback length"), N_("LINES")},
-    {G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, NULL, NULL, N_("[-e|-- COMMAND [ARGUMENT...]]")},
+    {"version",             0,      0, G_OPTION_ARG_NONE, NULL, NULL, NULL},
+    {"about",               0,      0, G_OPTION_ARG_NONE, NULL, NULL, NULL},
+    {"tab",                 0,      0, G_OPTION_ARG_NONE, NULL, NULL, NULL},
+    {"command",             'e',    0, G_OPTION_ARG_FILENAME, NULL, N_("Execute the argument to this option inside the terminal"), N_("COMMAND")},
+    {"working-directory",   0,      0, G_OPTION_ARG_FILENAME, NULL, N_("Set the working directory"), N_("DIRNAME")},
+    {"wait",                0,      0, G_OPTION_ARG_NONE, NULL, N_("Wait until the child exits (TODO)"), NULL},
+    {"title",               'T',    0, G_OPTION_ARG_STRING, NULL, N_("Set the initial window title"), N_("TITLE")},
+    {"set-shell",           0,      0, G_OPTION_ARG_STRING_ARRAY, NULL, N_("ADVANCED: Set the shell to launch"), N_("SHELL")},
+    {"set-scrollback",      0,      0, G_OPTION_ARG_INT64, NULL, N_("ADVANCED: Set the scrollback length"), N_("LINES")},
+    {G_OPTION_REMAINING,    0,      0, G_OPTION_ARG_FILENAME_ARRAY, NULL, NULL, N_("[-e|-- COMMAND [ARGUMENT...]]")},
     { NULL }
 };
 
@@ -333,7 +331,8 @@ static void new_tab_activated (GSimpleAction* action, GVariant* parameter, gpoin
     if (window) {
         dir = gt_window_get_working_dir (GT_WINDOW (window));
         gt_application_add_terminal (self, GT_WINDOW (window), timestamp, dir, NULL, NULL);
-    } else {
+    }
+    else {
         gt_application_add_terminal (self, NULL, timestamp, NULL, NULL, NULL);
     }
 }
@@ -365,7 +364,6 @@ static void zoom_normal_activated (GSimpleAction* action, GVariant* parameter, g
 
     gt_settings_reset_scale (self->settings);
 }
-
 
 
 static void zoom_in_activated (GSimpleAction* action, GVariant* parameter, gpointer data)
@@ -419,6 +417,8 @@ static gboolean scale_to_can_reset (GBinding* binding, const GValue* fromValue, 
 static void gt_application_init (GtApplication *self)
 {
     g_autoptr (GPropertyAction) themeAction = NULL;
+
+    // 获取所有的 GdkDisplay 实例
     AdwStyleManager *styleManager = adw_style_manager_get_default ();
     GAction *action;
 
@@ -479,13 +479,14 @@ static void started (GObject* src, GAsyncResult* res, gpointer app)
 
     GPid pid = gt_tab_start_finish (page, res, &error);
     if (error) {
-        g_warning ("Failed to start %s: %s", G_OBJECT_TYPE_NAME (src), error->message);
+        LOG_WARNING("Failed to start %s: %s", G_OBJECT_TYPE_NAME (src), error->message);
         return;
     }
 
     gt_watcher_add (gt_watcher_get_default (), pid, page);
 }
 
+// DJ- 1
 GtTab* gt_application_add_terminal (GtApplication* self, GtWindow* existingWindow, guint32 timestamp, GFile* workingDirectory, GStrv argv, const char* title)
 {
     g_autofree char *directory = NULL;
@@ -500,7 +501,8 @@ GtTab* gt_application_add_terminal (GtApplication* self, GtWindow* existingWindo
 
     if (workingDirectory) {
         directory = g_file_get_path (workingDirectory);
-    } else {
+    }
+    else {
         directory = g_strdup (g_get_home_dir ());
     }
 
@@ -517,7 +519,8 @@ GtTab* gt_application_add_terminal (GtApplication* self, GtWindow* existingWindo
 
     if (existingWindow) {
         window = GTK_WINDOW (existingWindow);
-    } else {
+    }
+    else {
         GtkWindow *active_window;
         int width = -1, height = -1;
 

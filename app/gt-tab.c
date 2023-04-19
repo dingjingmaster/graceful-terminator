@@ -7,6 +7,7 @@
 
 #include <pcre2.h>
 
+#include "gt-log.h"
 #include "gt-util.h"
 #include "gt-pages.h"
 #include "gt-config.h"
@@ -151,7 +152,7 @@ static void search_changed(GtkSearchBar *bar, GtTab *self)
     regex = vte_regex_new_for_search (g_regex_escape_string (search, -1), -1, flags, &error);
 
     if (error) {
-        g_warning ("Search error: %s", error->message);
+        LOG_WARNING("Search error: %s", error->message);
         return;
     }
 
@@ -357,13 +358,13 @@ static gboolean gt_tab_grab_focus(GtkWidget *widget)
 
 static void gt_tab_real_start(GtTab *tab, GAsyncReadyCallback callback, gpointer callback_data)
 {
-    g_critical ("%s doesn't implement start", G_OBJECT_TYPE_NAME (tab));
+    LOG_ERROR("%s doesn't implement start", G_OBJECT_TYPE_NAME (tab));
 }
 
 
 static GPid gt_tab_real_start_finish(GtTab *tab, GAsyncResult *res, GError **error)
 {
-    g_critical ("%s doesn't implement start_finish", G_OBJECT_TYPE_NAME (tab));
+    LOG_ERROR("%s doesn't implement start_finish", G_OBJECT_TYPE_NAME (tab));
 
     return 0;
 }
@@ -391,6 +392,7 @@ static void gt_tab_real_died(GtTab *self, GtkMessageType type, const char *messa
 
 static void gt_tab_class_init(GtTabClass *klass)
 {
+    LOG_DEBUG("gt_tab_class_init");
     GObjectClass *object_class = G_OBJECT_CLASS   (klass);
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
     GtTabClass *tab_class = GT_TAB_CLASS (klass);
@@ -427,7 +429,6 @@ static void gt_tab_class_init(GtTabClass *klass)
     pspecs[PROP_TAB_TOOLTIP] = g_param_spec_string ("tab-tooltip", "Tab Tooltip",
                                                     "Extra information to show in the tooltip", NULL,
                                                     G_PARAM_READWRITE);
-
 
     pspecs[PROP_IS_ACTIVE] = g_param_spec_boolean ("is-active", "Is Active", "Current tab", FALSE,
                                                    G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);

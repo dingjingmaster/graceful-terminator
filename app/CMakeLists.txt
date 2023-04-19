@@ -78,6 +78,9 @@ FILE(GLOB GT_SRC
         ${CMAKE_SOURCE_DIR}/app/xdg-fm1.c
         ${CMAKE_SOURCE_DIR}/app/menus.ui
 
+        ${CMAKE_SOURCE_DIR}/app/gt-context-menu.c
+        ${CMAKE_SOURCE_DIR}/app/gt-context-menu.h
+
         ${CMAKE_SOURCE_DIR}/app/gt-marshals.list
         )
 

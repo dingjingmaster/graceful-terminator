@@ -3,6 +3,7 @@
 #include <gio/gio.h>
 #include <vte/vte.h>
 
+#include "gt-log.h"
 #include "gt-settings.h"
 
 
@@ -247,7 +248,7 @@ GStrv gt_settings_get_shell(GtSettings *self)
     shell = g_new0 (char *, 2);
     shell[0] = g_strdup ("/bin/sh");
     shell[1] = NULL;
-    g_warning ("No Shell! Defaulting to “%s”", shell[0]);
+    LOG_DEBUG("No Shell! Defaulting to “%s”", shell[0]);
 
     return g_steal_pointer (&shell);
 }
