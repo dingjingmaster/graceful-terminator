@@ -268,9 +268,9 @@ static void context_menu(GtTerminal *self, double x, double y, gboolean touch)
     app = GTK_APPLICATION (g_application_get_default ());
 
     if (!self->popup_menu) {
-        self->popup_menu = gt_context_menu_new(); //gtk_popover_menu_new_from_model (G_MENU_MODEL (model));
-//        GMenu* model = gtk_application_get_menu_by_id (app, "context-menu");
-//        self->popup_menu = gtk_popover_menu_new_from_model (G_MENU_MODEL (model));
+//        self->popup_menu = gt_context_menu_new(); //gtk_popover_menu_new_from_model (G_MENU_MODEL (model));
+        GMenu* model = gtk_application_get_menu_by_id (app, "context-menu");
+        self->popup_menu = gtk_popover_menu_new_from_model (G_MENU_MODEL (model));
         gtk_widget_set_parent (self->popup_menu, GTK_WIDGET (self));
     }
 

@@ -49,7 +49,7 @@ GtkWidget* gt_context_menu_new()
 
     g_autoptr(GtkPopoverMenu) popupMenu = gtk_popover_menu_new_from_model(G_MENU_MODEL(menu));
 
-    GtkWidget* selectAll = gtk_button_new_with_label(_("_Select Allo"));
+    GtkWidget* selectAll = gtk_button_new_with_label(_("_Select All"));
     gboolean ret = gtk_popover_menu_add_child(GTK_POPOVER_MENU(popupMenu), selectAll, "context-menu");
     LOG_DEBUG("%s", ret ? "ok" : "error")
 
