@@ -1,9 +1,7 @@
+cmake_minimum_required(VERSION 3.24)
 project(graceful-terminator C)
 
-cmake_minimum_required(VERSION 3.24)
-
 set(CMAKE_C_STANDARD 11)
-
 set(PROJECT_VERSION_MAJOR 0)
 set(PROJECT_VERSION_MINOR 0)
 set(PROJECT_VERSION_PATCH 0)
@@ -38,6 +36,9 @@ MESSAGE(STATUS "OS distribute: '${DISTRIB}'")
 execute_process(COMMAND bash -c "uname -m | xargs echo -n" OUTPUT_VARIABLE ARCH)
 message(STATUS "Arch: '${ARCH}'")
 
+execute_process(COMMAND bash -c "[[ -d '/usr/lib/nautilus/extensions-4/' ]] && echo 1 | xargs echo -n" OUTPUT_VARIABLE NAUTILUS4_FOUND)
+message(STATUS "nautilus 4 enable: '${NAUTILUS4_FOUND}'")
+
 find_package (PkgConfig)
 
 pkg_check_modules(GLIB REQUIRED glib-2.0)
@@ -48,7 +49,6 @@ pkg_check_modules(PCRE REQUIRED libpcre2-8)
 pkg_check_modules(VTE REQUIRED vte-2.91-gtk4)
 pkg_check_modules(GTOP REQUIRED libgtop-2.0)
 pkg_check_modules(ADWAITA REQUIRED libadwaita-1)
-pkg_check_modules(NAUTILUS4 libnautilus-extension-4)
 pkg_check_modules(GDS REQUIRED gsettings-desktop-schemas)
 
 include_directories(${VTE_INCLUDE_DIRS})
@@ -63,6 +63,7 @@ include_directories(${GIO_UNIX_INCLUDE_DIRS})
 
 add_subdirectory(app)
 
-if (${NAUTILUS4_FOUND} OR false)
-add_subdirectory(extensions)
+if (${NAUTILUS4_FOUND})
+    pkg_check_modules(NAUTILUS4 libnautilus-extension-4)
+    add_subdirectory(extensions)
 endif()
